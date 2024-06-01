@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Members</title>
+    <style>
+        .member-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        .member-card {
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Members</h1>
+    <div class="member-grid">
+        {% for member in members %}
+        <div class="member-card">
+            <p>First Name: {{ member.FirstName }}</p>
+            <p>Last Name: {{ member.LastName }}</p>
+            <p>Birthday: {{ member.birthday }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
