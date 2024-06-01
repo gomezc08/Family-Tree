@@ -31,3 +31,14 @@ class Person(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+class Photo(models.Model):
+    photo_id = models.AutoField(primary_key=True)
+    person = models.ForeignKey(Person, on_delete=models.CASCADE)
+    photo_path = models.CharField(max_length=30)
+
+    class Meta:
+        db_table = 'Photo'
+
+    def __str__(self):
+        return f"Photo {self.photo_id} for {self.person}"

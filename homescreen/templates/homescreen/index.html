@@ -3,8 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Members</title>
+    <title>Family Tree</title>
     <style>
+        body {
+            text-align: center;
+            background-color: #FFC0D9;
+        }
+        img {
+            transition: transform .5s;
+        }
+        img:hover {
+            transform: scale(2);
+        }
+        .header {
+            padding : 30px;
+        }
         .member-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -14,18 +27,27 @@
             border: 1px solid #ccc;
             padding: 10px;
             border-radius: 5px;
-            background-color: #f9f9f9;
+            text-align : center;
+            background-color: #F9F9E0;
+        }
+        .profile-pic {
+            width: 150px; 
+            height: 150px;
+            object-fit: cover; 
+            border-radius: 50%; 
         }
     </style>
+    {% load static %}
 </head>
 <body>
-    <h1>Members</h1>
+    <h1 class="header">Family Tree</h1>
     <div class="member-grid">
         {% for member in members %}
         <div class="member-card">
-            <p>First Name: {{ member.FirstName }}</p>
-            <p>Last Name: {{ member.LastName }}</p>
-            <p>Birthday: {{ member.birthday }}</p>
+            <a href="http://www.google.com">
+                <img class="profile-pic" src="{% static 'pic_location/' %}{{member.LastName}}{{ member.FirstName}}.png" alt="Profile Picture">
+            </a>
+            <p>{{ member.FirstName }} {{ member.LastName }}</p>
         </div>
         {% endfor %}
     </div>
