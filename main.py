@@ -1,4 +1,4 @@
-from Database import Manager  # Adjust import based on your package structure
+from Model import Manager  # Adjust import based on your package structure
 
 def main():
     print("Choose an option below.")
