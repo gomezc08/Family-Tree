@@ -1,4 +1,8 @@
 from Model import Manager 
+import tkinter as tk
+from tkinter import filedialog, simpledialog
+import shutil
+import os
 
 def main():
     print("Choose an option below.")
@@ -9,6 +13,7 @@ def main():
     print("\t5. Divorce (tamales).")
     print("\t6. Add an interest (for example: soccer, cooking, hiking).")
     print("\t7. Remove an interest.")
+    print("\t8. Add profile pic to a user.")
     answer = input("Option: ")
     
     if answer == '1':
@@ -25,6 +30,8 @@ def main():
         number6()
     elif answer == '7':
         number7()
+    elif answer == '8':
+        number8()
     else:
         print("Invalid input. Please enter a number between 1 and 7.")
 
@@ -264,6 +271,52 @@ def number7():
     manager_instance.remove_interest(personID, interest)
     
     print("Memo chicken likes.")
+
+def number8():
+    # Create a Tkinter root widget (it will be hidden)
+    root = tk.Tk()
+    root.withdraw()  # Hide the root window
+
+    # Open the file dialog to select a file
+    file_path = filedialog.askopenfilename(title="Select a .png file to move", filetypes=[("PNG files", "*.png")])
+
+    # Check if a file was selected and if it has a .png extension
+    if file_path and file_path.lower().endswith('.png'):
+        # Ask for user input for first name, last name, and birthday
+        first_name = simpledialog.askstring("Input", "Enter First Name:")
+        last_name = simpledialog.askstring("Input", "Enter Last Name:")
+        birthday = simpledialog.askstring("Input", "Enter birthday (YYYY-MM-DD):")
+        
+        manager_instance = Manager.Manager() 
+        personID = manager_instance.get_id(first_name, last_name, birthday)
+
+        # Define the destination directory
+        destination_directory = "./staticfiles/pic_location"
+
+        # Ensure the destination directory exists
+        if not os.path.exists(destination_directory):
+            os.makedirs(destination_directory)
+
+        # Check if a directory was selected
+        if destination_directory:
+            # Extract the file name from the file path
+            file_name = last_name + first_name + ".png"
+            # Construct the full destination path
+            destination_path = os.path.join(destination_directory, file_name) 
+            print(f"Destination path: {destination_path}")
+
+            # Move the file to the destination directory
+            shutil.move(file_path, destination_path)
+            
+            # Call the add_photo method if it exists
+            manager_instance.add_photo(personID, destination_path)
+
+            print(f"Moved '{file_path}' to '{destination_path}'")
+        else:
+            print("No destination directory selected.")
+    else:
+        print("No .png file selected.")  
+
 
 if __name__ == "__main__":
     main()
