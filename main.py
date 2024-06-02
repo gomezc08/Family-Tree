@@ -1,4 +1,4 @@
-from Model import Manager  # Adjust import based on your package structure
+from Model import Manager 
 
 def main():
     print("Choose an option below.")
@@ -152,9 +152,9 @@ def number2():
     answer3 = input("Wanna establish children? (yes/no): ")
     if answer3 == "yes":
         while answer3 == "yes":
-            f3 = input("Parent First Name: ")
-            l3 = input("Parent Last Name: ")
-            b3 = input("Parent Birthday (YYYY-MM-DD): ")
+            f3 = input("Child First Name: ")
+            l3 = input("Child Last Name: ")
+            b3 = input("Child Birthday (YYYY-MM-DD): ")
             childID = manager_instance.get_id(f3, l3, b3)
             manager_instance.create_household_relationship(personID, childID)
             answer3 = input("Wanna establish another child? (yes/no): ")

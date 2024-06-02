@@ -1,7 +1,5 @@
 #from Database.Connector import Connector
 from Model.Connector import Connector
-import sys
-import os
 
 class Manager:
     """
