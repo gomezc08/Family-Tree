@@ -31,7 +31,7 @@ class Person(models.Model):
         ordering = ['FirstName', 'LastName']
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        return f"{self.FirstName} {self.LastName}"
 
 class Photo(models.Model):
     photo_id = models.AutoField(primary_key=True)
@@ -46,11 +46,11 @@ class Photo(models.Model):
         return f"Photo {self.photo_id} for {self.person}"
 
 class Interests(models.Model):
-    person = models.ForeignKey(Person, on_delete=models.CASCADE)
+    person = models.ForeignKey(Person, on_delete=models.CASCADE, db_column='PersonID', primary_key=True)
     interest = models.CharField(max_length=40)
 
     class Meta:
-        managed = False 
+        managed = False  # Assuming you're managing this table externally
         db_table = 'Interests'
         unique_together = ('person', 'interest')
 
@@ -58,8 +58,8 @@ class Interests(models.Model):
         return f"{self.person}'s Interest: {self.interest}"
 
 class Spouse(models.Model):
-    spouse1 = models.ForeignKey(Person, related_name='spouse1', on_delete=models.CASCADE)
-    spouse2 = models.ForeignKey(Person, related_name='spouse2', on_delete=models.CASCADE)
+    spouse1 = models.ForeignKey(Person, related_name='spouse1_set', on_delete=models.CASCADE)
+    spouse2 = models.ForeignKey(Person, related_name='spouse2_set', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'Spouse'
@@ -70,8 +70,8 @@ class Spouse(models.Model):
 
 class Household(models.Model):
     id = models.AutoField(primary_key=True)  # Explicitly define id field
-    parents = models.ForeignKey(Person, related_name='parents', on_delete=models.CASCADE)
-    child = models.ForeignKey(Person, related_name='child', on_delete=models.CASCADE)
+    parents = models.ForeignKey(Person, related_name='parents_set', on_delete=models.CASCADE)
+    child = models.ForeignKey(Person, related_name='child_set', on_delete=models.CASCADE)
 
     class Meta:
         managed = False
@@ -80,4 +80,3 @@ class Household(models.Model):
 
     def __str__(self):
         return f"{self.parents} & {self.child}"
-
