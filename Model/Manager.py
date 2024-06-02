@@ -162,12 +162,12 @@ class Manager:
         finally:
             self.connector.close_connection()
     
-    def remove_interest(self, interest_id):
+    def remove_interest(self, person_id, interest):
         self.connector.open_connection()
         
         try:
-            query = "DELETE FROM Interests WHERE ID = %s"
-            self.connector.cursor.execute(query, (interest_id,))
+            query = "DELETE FROM Interests WHERE PersonID = %s AND Interest = %s"
+            self.connector.cursor.execute(query, (person_id, interest,))
             self.connector.cnx.commit()
 
         except Exception as e:
@@ -334,44 +334,71 @@ class Manager:
 
         return spouse_id[0]
     
+    def view_interest(self, person_id):
+        self.connector.open_connection()
+        
+        try:
+            query = "SELECT Interest FROM Interests WHERE PersonID = %s"
+            self.connector.cursor.execute(query, (person_id,))
+            interest = [result[0] for result in self.connector.cursor.fetchall()]
+
+        except Exception as e:
+            print(e)
+            interest = []
+
+        finally:
+            self.connector.close_connection()
+
+        return interest
+    
     def get_family_info(self, person_id):
         self.connector.open_connection()
         
         try:
             # Query for parents
             query_parents = """
-                SELECT p.ID, p.FirstName, p.LastName 
-                FROM Spouse sp
-                JOIN Children ch ON sp.ID = ch.ParentsID
-                JOIN Person p ON sp.Spouse1ID = p.ID OR sp.Spouse2ID = p.ID
-                WHERE ch.ChildID = %s
+                SELECT DISTINCT p1.ID AS ParentID, p1.FirstName AS ParentFirstName, p1.LastName AS ParentLastName
+                FROM Household h
+                JOIN Person p1 ON h.ParentsID = p1.ID
+                LEFT JOIN Spouse s ON s.Spouse1ID = p1.ID OR s.Spouse2ID = p1.ID
+                WHERE h.ChildID = %s
+
+                UNION
+
+                SELECT DISTINCT p2.ID AS ParentID, p2.FirstName AS ParentFirstName, p2.LastName AS ParentLastName
+                FROM Household h
+                JOIN Person p1 ON h.ParentsID = p1.ID
+                LEFT JOIN Spouse s ON s.Spouse1ID = p1.ID OR s.Spouse2ID = p1.ID
+                JOIN Person p2 ON p2.ID = (CASE 
+                                                WHEN s.Spouse1ID = p1.ID THEN s.Spouse2ID 
+                                                WHEN s.Spouse2ID = p1.ID THEN s.Spouse1ID 
+                                            END)
+                WHERE h.ChildID = %s;
+
             """
-            self.connector.cursor.execute(query_parents, (person_id,))
+            self.connector.cursor.execute(query_parents, (person_id, person_id,))
             parents = self.connector.cursor.fetchall()
 
-            # Query for children
-            query_children = """
-                SELECT p.ID, p.FirstName, p.LastName 
-                FROM Children ch
-                JOIN Person p ON ch.ChildID = p.ID
-                WHERE ch.ParentsID IN (
-                    SELECT sp.ID FROM Spouse sp
-                    WHERE sp.Spouse1ID = %s OR sp.Spouse2ID = %s
-                )
+            # Query for spouse (if any)
+            query_spouse = """
+                SELECT p.ID AS SpouseID, p.FirstName, p.LastName
+                FROM Spouse s
+                JOIN Person p ON (s.Spouse1ID = p.ID OR s.Spouse2ID = p.ID)
+                WHERE (s.Spouse1ID = %s OR s.Spouse2ID = %s) AND p.ID != %s;
             """
-            self.connector.cursor.execute(query_children, (person_id, person_id))
-            children = self.connector.cursor.fetchall()
+            self.connector.cursor.execute(query_spouse, (person_id, person_id, person_id,))
+            spouse = self.connector.cursor.fetchone()
 
-            # Query for siblings
-            query_siblings = """
-                SELECT DISTINCT sibling.ID, sibling.FirstName, sibling.LastName
-                FROM Children ch1
-                JOIN Children ch2 ON ch1.ParentsID = ch2.ParentsID
-                JOIN Person sibling ON ch2.ChildID = sibling.ID
-                WHERE ch1.ChildID = %s AND sibling.ID != %s
+            # Query for children (if any)
+            query_children = """
+                SELECT p.ID AS ChildID, p.FirstName, p.LastName
+                FROM Household h
+                JOIN Person p ON h.ChildID = p.ID
+                WHERE h.ParentsID = %s;
+
             """
-            self.connector.cursor.execute(query_siblings, (person_id, person_id))
-            siblings = self.connector.cursor.fetchall()
+            self.connector.cursor.execute(query_children, (person_id,))
+            children = self.connector.cursor.fetchall()
 
             # Store the results in a list of dictionaries for easier handling
             results = []
@@ -384,20 +411,20 @@ class Manager:
                     "LastName": parent[2]
                 })
 
+            if spouse:
+                results.append({
+                    "Relationship": "Spouse",
+                    "ID": spouse[0],
+                    "FirstName": spouse[1],
+                    "LastName": spouse[2]
+                })
+
             for child in children:
                 results.append({
                     "Relationship": "Child",
                     "ID": child[0],
                     "FirstName": child[1],
                     "LastName": child[2]
-                })
-
-            for sibling in siblings:
-                results.append({
-                    "Relationship": "Sibling",
-                    "ID": sibling[0],
-                    "FirstName": sibling[1],
-                    "LastName": sibling[2]
                 })
 
             return results
@@ -409,6 +436,7 @@ class Manager:
 
         finally:
             self.connector.close_connection()
+
 
 
 if __name__ == "__main__":

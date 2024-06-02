@@ -23,7 +23,6 @@ class Connector:
 
 
     def open_connection(self):
-        print("<<Opening>> connection to MySQL")
         config = {
             "user": "root",
             "password": "!WhitmanMemo08?",
@@ -35,7 +34,6 @@ class Connector:
         try:
             self.cnx = mysql.connector.connect(**config)
             self.cursor = self.cnx.cursor()
-            print("Connected to MySQL")
             
         except mysql.connector.Error as err:
             if err.errno == mysql.connector.errorcode.ER_ACCESS_DENIED_ERROR:
@@ -47,7 +45,6 @@ class Connector:
 
 
     def close_connection(self):
-        print("<<Closing>> connection to MySQL\n\n\n\n")
         self.cnx.close()
         self.cursor.close()
 
