@@ -60,7 +60,7 @@
         {% for member in members %}
         <div class="member-card">
             <a href="http://www.google.com">
-                <img class="profile-pic" src="{% static 'pic_location/' %}{{member.LastName}}{{ member.FirstName}}.png" alt="Profile Picture">
+                <img class="profile-pic" src="{% static 'pic_location/' %}{{member.LastName}}{{ member.FirstName}}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
             </a>
             <p>{{ member.FirstName }} {{ member.LastName }}</p>
         </div>
