@@ -1,0 +1,30 @@
+<!-- member_info.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Member Information</title>
+</head>
+<body>
+    <h1>{{ person.FirstName }} {{ person.LastName }}</h1>
+    <p>Birthday: {{ person.birthday }}</p>
+    <p>Gender: {{ person.get_gender_display }}</p>
+    <p>Email: {{ person.email }}</p>
+    <p>Cell: {{ person.cell }}</p>
+    <p>City Born: {{ person.CityBorn }}</p>
+    <p>State Born: {{ person.StateBorn }}</p>
+    <p>Country Born: {{ person.CountryBorn }}</p>
+    <p>City Current: {{ person.CityCurrent }}</p>
+    <p>State Current: {{ person.StateCurrent }}</p>
+    <p>Country Current: {{ person.CountryCurrent }}</p>
+
+    <h2>Interests</h2>
+    <ul>
+    {% for interest in interests %}
+        <li>{{ interest.interest }}</li>
+    {% endfor %}
+    </ul>
+
+    
+</body>
+</html>
