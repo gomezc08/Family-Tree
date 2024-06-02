@@ -25,9 +25,10 @@ class Person(models.Model):
     CountryCurrent = models.CharField(max_length=30, null=True, blank=True)
 
     class Meta:
-        managed = False  # This tells Django not to manage the table's schema
+        managed = False 
         db_table = 'Person'
         unique_together = ('FirstName', 'LastName', 'birthday')
+        ordering = ['FirstName', 'LastName']
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
