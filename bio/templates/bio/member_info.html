@@ -11,17 +11,18 @@
             font-family: "Lucida Console";
             display: flex;
             flex-direction: column; /* Ensure content stacks vertically */
-            align-items: center; /* Center align items horizontally */
-            min-height: 100vh; /* Ensure full viewport height */
-            margin: 0; /* Remove default margin */
-            padding: 0; /* Remove default padding */
+            align-items: center; 
+            min-height: 100vh; 
+            margin: 0;
+            padding: 0; 
         }
-
+        
         .header {
             padding: 30px;
             text-align: center; /* Center align text */
+            display: inline;
         }
-
+        
         .content {
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -30,39 +31,40 @@
             margin-top: 30px; /* Add margin to separate header and content */
             padding: 0 20px; /* Add padding for better spacing */
         }
-
+        
         .left-content, .right-content {
             padding: 30px;
             border: 1px solid #ccc;
             border-radius: 5px;
             background-color: #F9F9E0;
         }
-
+        
         .profile-pic {
             width: 300px;
             height: 300px;
             object-fit: cover;
             border-radius: 50%;
             margin-bottom: 10px;
-        }
-
-        h1, h3 {
             transition: transform .5s;
         }
-
+        
+        h1, h2, h3, a {
+            transition: transform .5s;
+        }
+        
         p, li {
             margin-bottom: 8px;
             transition: transform .5s;
         }
-
-        p:hover, h1:hover, h3:hover, li:hover {
+        
+        p:hover, h1:hover, h3:hover, li:hover, a:hover, h2:hover {
             transform: scale(1.1);
         }
-
+        
         ul {
             padding-left: 20px;
         }
-
+        
         .family-pic {
             width: 150px;
             height: 150px;
@@ -71,29 +73,82 @@
             margin-right: 10px;
             transition: transform .5s;
         }
-
+        
         .family-info {
             display: flex;
             align-items: center;
             margin-bottom: 10px;
+            transition: transform .5s;
         }
-
+        
         .family-info a {
             text-decoration: none;
             color: inherit;
             display: flex;
             align-items: center;
         }
-
-
+        
         .family-info a:hover {
             transform: scale(1.1);
         }
+        
+        .button {
+            appearance: none;
+            background-color: #FFFFFF;
+            border-radius: 40em;
+            border-style: none;
+            box-shadow: #ADCFFF 0 -12px 6px inset;
+            box-sizing: border-box;
+            color: #000000;
+            cursor: pointer;
+            display: inline-block;
+            font-family: -apple-system, sans-serif;
+            font-size: 0.9rem; /* Smaller font size */
+            font-weight: 700;
+            letter-spacing: -.24px;
+            margin: 0;
+            outline: none;
+            padding: 0.5rem 1rem; 
+            quotes: auto;
+            text-align: center;
+            text-decoration: none;
+            transition: all .15s;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+        
+        .button:hover {
+            background-color: #FFC229;
+            box-shadow: #FF6314 0 -6px 8px inset;
+            transform: scale(1.125);
+        }
+        
+        .button:active {
+            transform: scale(1.025);
+        }
+        
+        .button-link {
+            position: absolute;
+            left: 0;
+            padding-left: 20px;
+        }
+        
+        @media (min-width: 768px) {
+            .button {
+                font-size: 1.1rem; 
+                padding: 0.75rem 1.5rem; 
+            }
+        }
+        
     </style>
     {% load static %}
 </head>
 <body>
     <div class="header">
+        <a href="http://127.0.0.1:8000/" class="button-link">
+            <button class="button" role="button">Home</button>
+        </a>
         <h1>{{ person.FirstName }} {{ person.LastName }}</h1>
     </div>
 
