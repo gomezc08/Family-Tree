@@ -14,6 +14,7 @@ def main():
     print("\t6. Add an interest (for example: soccer, cooking, hiking).")
     print("\t7. Remove an interest.")
     print("\t8. Add profile pic to a user.")
+    print("\t9. Initialize (only for testing purposes).")
     answer = input("Option: ")
     
     if answer == '1':
@@ -32,6 +33,8 @@ def main():
         number7()
     elif answer == '8':
         number8()
+    elif answer == '9':
+        number9()
     else:
         print("Invalid input. Please enter a number between 1 and 7.")
 
@@ -317,6 +320,55 @@ def number8():
     else:
         print("No .png file selected.")  
 
+def number9():
+    m = Manager.Manager()
+    # mama.
+    m.add_member("Veronica", "Gomez", "1973-01-09", True, 51, "Female", "She/her/hers")
+    m.add_interest(1, "Nursing")
+    m.add_interest(1, "Cooking")
+    m.add_interest(1, "Wine")
+    
+    # papa.
+    m.add_member("Antonio", "Gomez", "1968-06-13", True, 55, "Male", "He/him/his")
+    m.add_interest(2, "Soccer")
+    m.add_interest(2, "Working Out")
+    m.add_interest(2, "Pooping")
+    
+    # Angela.
+    m.add_member("Angela", "Gomez", "1999-11-11", True, 24, "Female", "She/her/hers")
+    m.add_interest(3, "Studying")
+    m.add_interest(3, "Avacado toast")
+    m.add_interest(3, "Asians")
+    
+    # Chris.
+    m.add_member("Christian", "Gomez", "2002-07-25", True, 21, "Male", "He/him/his", "kimigomez10@gmail.com", "360-839-1100", "Vancouver", "WA", "USA")
+    m.add_interest(4, "Soccer")
+    m.add_interest(4, "CS")
+    m.add_interest(4, "Spongebob")
+    
+    # Memo.
+    m.add_member("Memo", "Gomez", "2016-05-05", True, 8, "Male")
+    m.add_interest(5, "Walks")
+    m.add_interest(5, "Chicken")
+    m.add_interest(5, "Sleeping")
+    m.add_interest(5, "Blankets")
+    m.add_interest(5, "Papa")
+    
+    # getting each person's id.
+    mama_id = m.get_id("Veronica", "Gomez", "1973-01-09")
+    papa_id = m.get_id("Antonio", "Gomez", "1968-06-13")
+    angela_id = m.get_id("Angela", "Gomez", "1999-11-11")
+    chris_id = m.get_id("Christian", "Gomez", "2002-07-25")
+    memo_id = m.get_id("Memo", "Gomez", "2016-05-05")
+    
+    # creating associations.
+    m.create_spouse_relationship(papa_id, mama_id)
+    mama_papa_id = m.get_spouse_id(mama_id)
+    
+    # children to family.
+    m.create_household_relationship(mama_papa_id, angela_id)
+    m.create_household_relationship(mama_papa_id, chris_id)
+    m.create_household_relationship(mama_papa_id, memo_id)
 
 if __name__ == "__main__":
     main()
