@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Family Tree</title>
+<head>
     <style>
         body {
             text-align: center;
@@ -60,7 +61,7 @@
     <div class="member-grid">
         {% for member in members %}
         <div class="member-card">
-            <a href="{% url 'member_info' member.id %}">
+            <a href="{% url 'member_info' member.Id %}">
                 <img class="profile-pic" src="{% static 'pic_location/' %}{{member.LastName}}{{ member.FirstName}}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
             </a>
             <p>{{ member.FirstName }} {{ member.LastName }}</p>

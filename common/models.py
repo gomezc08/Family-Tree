@@ -7,16 +7,16 @@ class Person(models.Model):
         ('Non-binary', 'Non-binary'),
     ]
 
-    id = models.AutoField(primary_key=True)
+    Id = models.AutoField(primary_key=True)
     FirstName = models.CharField(max_length=40)
     LastName = models.CharField(max_length=40)
-    birthday = models.DateField()
+    Birthday = models.DateField()
     IsAlive = models.BooleanField(default=True)
-    age = models.IntegerField()
-    gender = models.CharField(max_length=11, choices=GENDER_CHOICES, null=True, blank=True)
-    pronouns = models.CharField(max_length=20, null=True, blank=True)
-    email = models.EmailField(max_length=100, null=True, blank=True)
-    cell = models.CharField(max_length=20, null=True, blank=True)
+    Age = models.IntegerField()
+    Gender = models.CharField(max_length=11, choices=GENDER_CHOICES, null=True, blank=True)
+    Pronouns = models.CharField(max_length=20, null=True, blank=True)
+    Email = models.EmailField(max_length=100, null=True, blank=True)
+    Cell = models.CharField(max_length=20, null=True, blank=True)
     CityBorn = models.CharField(max_length=30, null=True, blank=True)
     StateBorn = models.CharField(max_length=30, null=True, blank=True)
     CountryBorn = models.CharField(max_length=30, null=True, blank=True)
@@ -27,56 +27,65 @@ class Person(models.Model):
     class Meta:
         managed = False 
         db_table = 'Person'
-        unique_together = ('FirstName', 'LastName', 'birthday')
+        unique_together = ('FirstName', 'LastName', 'Birthday')
         ordering = ['FirstName', 'LastName']
 
     def __str__(self):
         return f"{self.FirstName} {self.LastName}"
 
 class Photo(models.Model):
-    photo_id = models.AutoField(primary_key=True)
-    person = models.ForeignKey(Person, on_delete=models.CASCADE)
-    photo_path = models.CharField(max_length=30)
+    PhotoID = models.AutoField(primary_key=True)
+    PersonID = models.ForeignKey(Person, on_delete=models.CASCADE)
+    PhotoPath = models.CharField(max_length=30)
 
     class Meta:
         managed = False 
         db_table = 'Photo'
 
     def __str__(self):
-        return f"Photo {self.photo_id} for {self.person}"
+        return f"Photo {self.PhotoID} for {self.Person}"
 
 class Interests(models.Model):
-    person = models.ForeignKey(Person, on_delete=models.CASCADE, db_column='PersonID', primary_key=True)
-    interest = models.CharField(max_length=40)
+    PersonID = models.ForeignKey(Person, db_column='PersonID', on_delete=models.CASCADE, primary_key=True)
+    Interest = models.CharField(max_length=40)
 
     class Meta:
         managed = False  # Assuming you're managing this table externally
         db_table = 'Interests'
-        unique_together = ('person', 'interest')
+        unique_together = ('PersonID', 'Interest')
 
     def __str__(self):
-        return f"{self.person}'s Interest: {self.interest}"
+        return f"{self.PersonID}'s Interest: {self.Interest}"
 
 class Spouse(models.Model):
-    spouse1 = models.ForeignKey(Person, related_name='spouse1_set', on_delete=models.CASCADE)
-    spouse2 = models.ForeignKey(Person, related_name='spouse2_set', on_delete=models.CASCADE)
+    Spouse1ID = models.ForeignKey(Person, related_name='spouse1_set', db_column='Spouse1ID', on_delete=models.CASCADE)
+    Spouse2ID = models.ForeignKey(Person, related_name='spouse2_set', db_column='Spouse2ID', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'Spouse'
-        unique_together = ('spouse1', 'spouse2')
+        unique_together = ('Spouse1ID', 'Spouse2ID')
 
     def __str__(self):
-        return f"{self.spouse1} & {self.spouse2}"
+        return f"{self.Spouse1ID} & {self.Spouse2ID}"
 
 class Household(models.Model):
-    id = models.AutoField(primary_key=True)  # Explicitly define id field
-    parents = models.ForeignKey(Person, related_name='parents_set', on_delete=models.CASCADE)
-    child = models.ForeignKey(Person, related_name='child_set', on_delete=models.CASCADE)
+    ParentsID = models.OneToOneField(
+        Person,
+        related_name='child_relationships',
+        db_column='ParentsID',
+        on_delete=models.CASCADE
+    )
+    ChildID = models.OneToOneField(
+        Person,
+        related_name='parent_relationships',
+        db_column='ChildID',
+        on_delete=models.CASCADE
+    )
 
     class Meta:
         managed = False
         db_table = 'Household'
-        unique_together = ('parents', 'child')
+        unique_together = ('ParentsID', 'ChildID')
 
     def __str__(self):
-        return f"{self.parents} & {self.child}"
+        return f"{self.ParentsID} & {self.ChildID}"

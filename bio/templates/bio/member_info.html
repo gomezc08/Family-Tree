@@ -1,63 +1,57 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Member Information</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Tree</title>
     <style>
         body {
             text-align: left;
             background-color: #FFC0D9;
             font-family: "Lucida Console";
             display: flex;
-            justify-content: center;
+            flex-direction: column; /* Ensure content stacks vertically */
+            align-items: center; /* Center align items horizontally */
+            min-height: 100vh; /* Ensure full viewport height */
+            margin: 0; /* Remove default margin */
+            padding: 0; /* Remove default padding */
+        }
+
+        .header {
+            padding: 30px;
+            text-align: center; /* Center align text */
         }
 
         .content {
             display: grid;
-            grid-template-columns: 2fr 1fr; /* Two columns, each taking 50% width */
-            gap: 150px; /* Increase the gap between left and right content */
-            max-width: 1200px; /* Adjust max-width as needed */
-            margin: 30px auto; /* Add margin around the content */
+            grid-template-columns: 2fr 1fr;
+            gap: 150px;
+            max-width: 1200px;
+            margin-top: 30px; /* Add margin to separate header and content */
+            padding: 0 20px; /* Add padding for better spacing */
         }
 
-        .left-content {
-            padding: 30px; /* Padding around the left content */
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #F9F9E0;
-        }
-
-        .right-content {
-            padding: 30px; /* Padding around the right content */
+        .left-content, .right-content {
+            padding: 30px;
             border: 1px solid #ccc;
             border-radius: 5px;
             background-color: #F9F9E0;
         }
 
         .profile-pic {
-            width: 300px; 
+            width: 300px;
             height: 300px;
-            object-fit: cover; 
-            border-radius: 50%; 
-            margin-bottom: 10px; /* Margin below the profile picture */
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 10px;
         }
 
-        h1 {
-            margin-botton: 50px;
+        h1, h3 {
             transition: transform .5s;
         }
 
-        h3 {
-            margin-top: 20px;
-            margin-bottom: 20px;
-            transition: transform .5s;
-        }
-
-        p {
+        p, li {
             margin-bottom: 8px;
-            transition: transform .5s;
-        }
-
-        li {
             transition: transform .5s;
         }
 
@@ -66,31 +60,57 @@
         }
 
         ul {
-            padding-left: 20px; /* Left padding for the list */
+            padding-left: 20px;
         }
-        
+
+        .spouse-pic {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-right: 10px;
+            transition: transform .5s;
+        }
+
+        .spouse-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .spouse-info a {
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            align-items: center;
+        }
+
+
+        .spouse-info a:hover {
+            transform: scale(1.1);
+        }
     </style>
     {% load static %}
 </head>
 <body>
+    <div class="header">
+        <h1>{{ person.FirstName }} {{ person.LastName }}</h1>
+    </div>
+
     <div class="content">
         <div class="left-content">
             <!-- Member Information -->
-            <img class="profile-pic" src="{% static 'pic_location/' %}{{ person.LastName}}{{ person.FirstName}}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
-            <h1>{{ person.FirstName }} {{ person.LastName }}</h1>
-            <p><b>Birthday/Cumpleaños:</b> {{ person.birthday }}</p>
+            <img class="profile-pic" src="{% static 'pic_location/' %}{{ person.LastName }}{{ person.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
+            <p><b>Birthday/Cumpleaños:</b> {{ person.Birthday }}</p>
             {% if person.get_gender_display %}
                 <p><b>Gender/Género:</b> {{ person.get_gender_display }}</p>
             {% endif %}
-
-            {% if person.email %}
-                <p><b>Email/Correo electrónico:</b> {{ person.email }}</p>
+            {% if person.Email %}
+                <p><b>Email/Correo electrónico:</b> {{ person.Email }}</p>
             {% endif %}
-
-            {% if person.cell %}
-                <p><b>Cell/Celúla:</b> {{ person.cell }}</p>
+            {% if person.Cell %}
+                <p><b>Cell/Celúla:</b> {{ person.Cell }}</p>
             {% endif %}
-
             {% if person.CityBorn and person.StateBorn %}
                 <p><b>Location Born/lugar de nacimiento:</b> {{ person.CityBorn }}, {{ person.StateBorn }}</p>
             {% elif person.CityBorn %}
@@ -98,7 +118,6 @@
             {% elif person.StateBorn %}
                 <p><b>State Born/estado nacido:</b> {{ person.StateBorn }}</p>
             {% endif %}
-
             {% if person.CityCurrent and person.StateCurrent %}
                 <p><b>Current Location/ubicación actual:</b> {{ person.CityCurrent }}, {{ person.StateCurrent }}</p>
             {% elif person.CityCurrent %}
@@ -107,19 +126,38 @@
                 <p><b>Current State/estado actual:</b> {{ person.StateCurrent }}</p>
             {% endif %}
 
-
             <h3>Interests</h3>
             <ul>
                 {% for i in interests %}
-                    <li>{{ i.interest }}</li>
+                    <li>{{ i.Interest }}</li>
                 {% endfor %}
             </ul>
         </div>
 
         <div class="right-content">
             <h2>Relationships</h2>
+            <h3>Spouse</h3>
+            {% if spouse_relationships %}
+                {% for spouse in spouse_relationships %}
+                    <div class="spouse-info">
+                        {% if spouse.Spouse1ID.Id == person.Id %}
+                            <a href="{% url 'member_info' spouse.Spouse2ID.Id %}">
+                                <img class="spouse-pic" src="{% static 'pic_location/' %}{{ spouse.Spouse2ID.LastName }}{{ spouse.Spouse2ID.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
+                                <p>{{ spouse.Spouse2ID.FirstName }} {{ spouse.Spouse2ID.LastName }}</p>
+                            </a>
+                        {% else %}
+                            <a href="{% url 'member_info' spouse.Spouse1ID.Id %}">
+                                <img class="spouse-pic" src="{% static 'pic_location/' %}{{ spouse.Spouse1ID.LastName }}{{ spouse.Spouse1ID.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
+                                <p>{{ spouse.Spouse1ID.FirstName }} {{ spouse.Spouse1ID.LastName }}</p>
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No spouse information available.</p>
+            {% endif %}
+            
         </div>
     </div>
 </body>
-
 </html>
