@@ -8,7 +8,7 @@
     <style>
         body {
             text-align: center;
-            background-color: #FFC0D9;
+            background-color: #F3D7CA;
             font-family: "Lucida Console"
         }
 
@@ -32,18 +32,27 @@
             padding : 30px;
         }
 
+        .header-grid {
+            display: block;
+            background-color: #FFF8E3;
+        }
+
         .member-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 10px;
+            background-color: #FFF8E3;
+            padding: 20px 40px;
+            max-width: 80%;
+            margin: 0 auto; /* This centers the grid horizontally */
         }
+        
+        
 
         .member-card {
-            border: 1px solid #ccc;
             padding: 10px;
             border-radius: 5px;
             text-align : center;
-            background-color: #F9F9E0;
         }
 
         .profile-pic {
@@ -56,8 +65,9 @@
     {% load static %}
 </head>
 <body>
-    <h1 class="header">Family Tree</h1>
-    <h2 style="padding-bottom: 100px;"><i>"Family is like a pack of wolves: strong together, protective of each other, and always connected."</i></h2>
+    <div class="header-grid">
+        <h1 class="header">Family Tree</h1>
+    </div>
     <div class="member-grid">
         {% for member in members %}
         <div class="member-card">
