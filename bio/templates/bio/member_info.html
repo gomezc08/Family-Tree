@@ -26,43 +26,29 @@
         .content {
             display: grid;
             grid-template-columns: 2fr 1fr;
-            gap: 150px;
+            gap: 30px; /* Adjust spacing between grid items */
             max-width: 1200px;
             margin-top: 30px; /* Add margin to separate header and content */
             padding: 0 20px; /* Add padding for better spacing */
+            background-color: #FFF8E3;
         }
         
-        .left-content, .right-content {
-            padding: 30px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #F9F9E0;
+        .family-section {
+            margin-bottom: 30px; /* Space between sections */
         }
         
-        .profile-pic {
-            width: 300px;
-            height: 300px;
-            object-fit: cover;
-            border-radius: 50%;
-            margin-bottom: 10px;
-            transition: transform .5s;
+        .family-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px; /* Adjust spacing between family members */
         }
         
-        h1, h2, h3, a {
-            transition: transform .5s;
-        }
-        
-        p, li {
-            margin-bottom: 8px;
-            transition: transform .5s;
-        }
-        
-        p:hover, h1:hover, h3:hover, li:hover, a:hover, h2:hover {
-            transform: scale(1.1);
-        }
-        
-        ul {
-            padding-left: 20px;
+        .family-info a {
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         
         .family-pic {
@@ -70,26 +56,35 @@
             height: 150px;
             object-fit: cover;
             border-radius: 50%;
-            margin-right: 10px;
+            margin-bottom: 10px;
             transition: transform .5s;
         }
-        
-        .family-info {
-            display: flex;
+
+        .profile-container {
+            display: block;
+            justify-content: center;
             align-items: center;
+            height: 100vh; /* Adjust height as needed */
+            background-color: #FFF8E3;
+            width: 50%; /* Set width to 50% */
+            margin: 0 auto; /* Center align horizontally */
+            padding: 20px;
+        }
+        
+        
+        .profile-pic {
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 50%;
             margin-bottom: 10px;
             transition: transform .5s;
         }
         
-        .family-info a {
-            text-decoration: none;
-            color: inherit;
-            display: flex;
-            align-items: center;
-        }
         
-        .family-info a:hover {
-            transform: scale(1.1);
+        .family-info p {
+            margin-top: 5px; /* Adjust spacing between pic and name */
+            text-align: center; /* Center text */
         }
         
         .button {
@@ -135,10 +130,19 @@
         }
         
         @media (min-width: 768px) {
-            .button {
-                font-size: 1.1rem; 
-                padding: 0.75rem 1.5rem; 
+            .content {
+                grid-template-columns: repeat(4, 1fr); /* 4 columns on larger screens */
             }
+        
+            .family-section {
+                grid-column: span 2; /* Each section spans two columns on larger screens */
+            }
+        }
+        
+        .content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px; 
         }
         
     </style>
@@ -152,49 +156,49 @@
         <h1>{{ person.FirstName }} {{ person.LastName }}</h1>
     </div>
 
-    <div class="content">
-        <div class="left-content">
-            <!-- Member Information -->
-            <img class="profile-pic" src="{% static 'pic_location/' %}{{ person.LastName }}{{ person.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
-            <p><b>Birthday/Cumpleaños:</b> {{ person.Birthday }}</p>
-            {% if person.get_gender_display %}
-                <p><b>Gender/Género:</b> {{ person.get_gender_display }}</p>
-            {% endif %}
-            {% if person.Email %}
-                <p><b>Email/Correo electrónico:</b> {{ person.Email }}</p>
-            {% endif %}
-            {% if person.Cell %}
-                <p><b>Cell/Celúla:</b> {{ person.Cell }}</p>
-            {% endif %}
-            {% if person.CityBorn and person.StateBorn %}
-                <p><b>Location Born/lugar de nacimiento:</b> {{ person.CityBorn }}, {{ person.StateBorn }}</p>
-            {% elif person.CityBorn %}
-                <p><b>City Born/ciudad nacida:</b> {{ person.CityBorn }}</p>
-            {% elif person.StateBorn %}
-                <p><b>State Born/estado nacido:</b> {{ person.StateBorn }}</p>
-            {% endif %}
-            {% if person.CityCurrent and person.StateCurrent %}
-                <p><b>Current Location/ubicación actual:</b> {{ person.CityCurrent }}, {{ person.StateCurrent }}</p>
-            {% elif person.CityCurrent %}
-                <p><b>Current City/Ciudad Actual:</b> {{ person.CityCurrent }}</p>
-            {% elif person.StateCurrent %}
-                <p><b>Current State/estado actual:</b> {{ person.StateCurrent }}</p>
-            {% endif %}
+    <div class="profile-container">
+        <!-- Member Information -->
+        <img class="profile-pic" src="{% static 'pic_location/' %}{{ person.LastName }}{{ person.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
+        <p><b>Birthday/Cumpleaños:</b> {{ person.Birthday }}</p>
+        {% if person.get_gender_display %}
+            <p><b>Gender/Género:</b> {{ person.get_gender_display }}</p>
+        {% endif %}
+        {% if person.Email %}
+            <p><b>Email/Correo electrónico:</b> {{ person.Email }}</p>
+        {% endif %}
+        {% if person.Cell %}
+            <p><b>Cell/Celúla:</b> {{ person.Cell }}</p>
+        {% endif %}
+        {% if person.CityBorn and person.StateBorn %}
+            <p><b>Location Born/lugar de nacimiento:</b> {{ person.CityBorn }}, {{ person.StateBorn }}</p>
+        {% elif person.CityBorn %}
+            <p><b>City Born/ciudad nacida:</b> {{ person.CityBorn }}</p>
+        {% elif person.StateBorn %}
+            <p><b>State Born/estado nacido:</b> {{ person.StateBorn }}</p>
+        {% endif %}
+        {% if person.CityCurrent and person.StateCurrent %}
+            <p><b>Current Location/ubicación actual:</b> {{ person.CityCurrent }}, {{ person.StateCurrent }}</p>
+        {% elif person.CityCurrent %}
+            <p><b>Current City/Ciudad Actual:</b> {{ person.CityCurrent }}</p>
+        {% elif person.StateCurrent %}
+            <p><b>Current State/estado actual:</b> {{ person.StateCurrent }}</p>
+        {% endif %}
 
-            <h3>Interests</h3>
-            <ul>
-                {% for i in interests %}
-                    <li>{{ i.Interest }}</li>
-                {% endfor %}
-            </ul>
-        </div>
+        <h3>Interests</h3>
+        <ul>
+            {% for i in interests %}
+                <li>{{ i.Interest }}</li>
+            {% endfor %}
+        </ul>
 
-        <div class="right-content">
-            <h2>Relationships</h2>
+        <h2>Relationships</h2>
+
+        <!-- Spouse Section -->
+        <div class="family-section">
             <h3>Spouse</h3>
-            {% if spouse_relationships %}
-                {% for spouse in spouse_relationships %}
-                    <div class="family-info">
+            <div class="family-info">
+                {% if spouse_relationships %}
+                    {% for spouse in spouse_relationships %}
                         {% if spouse.Spouse1ID.Id == person.Id %}
                             <a href="{% url 'member_info' spouse.Spouse2ID.Id %}">
                                 <img class="family-pic" src="{% static 'pic_location/' %}{{ spouse.Spouse2ID.LastName }}{{ spouse.Spouse2ID.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
@@ -206,41 +210,45 @@
                                 <p>{{ spouse.Spouse1ID.FirstName }} {{ spouse.Spouse1ID.LastName }}</p>
                             </a>
                         {% endif %}
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p>No spouse information available.</p>
-            {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <p>No spouse information available.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Parents Section -->
+        <div class="family-section">
             <h3>Parents</h3>
-            {% if parents %}
-                {% for parent in parents %}
-                    <div class="family-info">
+            <div class="family-info">
+                {% if parents %}
+                    {% for parent in parents %}
                         <a href="{% url 'member_info' parent.Id %}">
                             <img class="family-pic" src="{% static 'pic_location/' %}{{ parent.LastName }}{{ parent.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
                             <p>{{ parent.FirstName }} {{ parent.LastName }}</p>
                         </a>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p>No parent information available.</p>
-            {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <p>No parent information available.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Children Section -->
+        <div class="family-section">
             <h3>Children</h3>
-            {% if children %}
-                {% for child in children %}
-                    <div class="family-info">
+            <div class="family-info">
+                {% if children %}
+                    {% for child in children %}
                         <a href="{% url 'member_info' child.Id %}">
                             <img class="family-pic" src="{% static 'pic_location/' %}{{ child.LastName }}{{ child.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
                             <p>{{ child.FirstName }} {{ child.LastName }}</p>
                         </a>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p>No children information available.</p>
-            {% endif %}
-
-
-            
-
+                    {% endfor %}
+                {% else %}
+                    <p>No children information available.</p>
+                {% endif %}
+            </div>
         </div>
     </div>
 </body>
