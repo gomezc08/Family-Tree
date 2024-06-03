@@ -63,7 +63,7 @@
             padding-left: 20px;
         }
 
-        .spouse-pic {
+        .family-pic {
             width: 150px;
             height: 150px;
             object-fit: cover;
@@ -72,13 +72,13 @@
             transition: transform .5s;
         }
 
-        .spouse-info {
+        .family-info {
             display: flex;
             align-items: center;
             margin-bottom: 10px;
         }
 
-        .spouse-info a {
+        .family-info a {
             text-decoration: none;
             color: inherit;
             display: flex;
@@ -86,7 +86,7 @@
         }
 
 
-        .spouse-info a:hover {
+        .family-info a:hover {
             transform: scale(1.1);
         }
     </style>
@@ -139,15 +139,15 @@
             <h3>Spouse</h3>
             {% if spouse_relationships %}
                 {% for spouse in spouse_relationships %}
-                    <div class="spouse-info">
+                    <div class="family-info">
                         {% if spouse.Spouse1ID.Id == person.Id %}
                             <a href="{% url 'member_info' spouse.Spouse2ID.Id %}">
-                                <img class="spouse-pic" src="{% static 'pic_location/' %}{{ spouse.Spouse2ID.LastName }}{{ spouse.Spouse2ID.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
+                                <img class="family-pic" src="{% static 'pic_location/' %}{{ spouse.Spouse2ID.LastName }}{{ spouse.Spouse2ID.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
                                 <p>{{ spouse.Spouse2ID.FirstName }} {{ spouse.Spouse2ID.LastName }}</p>
                             </a>
                         {% else %}
                             <a href="{% url 'member_info' spouse.Spouse1ID.Id %}">
-                                <img class="spouse-pic" src="{% static 'pic_location/' %}{{ spouse.Spouse1ID.LastName }}{{ spouse.Spouse1ID.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
+                                <img class="family-pic" src="{% static 'pic_location/' %}{{ spouse.Spouse1ID.LastName }}{{ spouse.Spouse1ID.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
                                 <p>{{ spouse.Spouse1ID.FirstName }} {{ spouse.Spouse1ID.LastName }}</p>
                             </a>
                         {% endif %}
@@ -156,13 +156,12 @@
             {% else %}
                 <p>No spouse information available.</p>
             {% endif %}
-
             <h3>Parents</h3>
             {% if parents %}
                 {% for parent in parents %}
-                    <div class="parent-info">
+                    <div class="family-info">
                         <a href="{% url 'member_info' parent.Id %}">
-                            <img class="spouse-pic" src="{% static 'pic_location/' %}{{ parent.LastName }}{{ parent.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
+                            <img class="family-pic" src="{% static 'pic_location/' %}{{ parent.LastName }}{{ parent.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
                             <p>{{ parent.FirstName }} {{ parent.LastName }}</p>
                         </a>
                     </div>
@@ -170,13 +169,12 @@
             {% else %}
                 <p>No parent information available.</p>
             {% endif %}
-            
             <h3>Children</h3>
             {% if children %}
                 {% for child in children %}
-                    <div class="child-info">
+                    <div class="family-info">
                         <a href="{% url 'member_info' child.Id %}">
-                            <img class="spouse-pic" src="{% static 'pic_location/' %}{{ child.LastName }}{{ child.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
+                            <img class="family-pic" src="{% static 'pic_location/' %}{{ child.LastName }}{{ child.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
                             <p>{{ child.FirstName }} {{ child.LastName }}</p>
                         </a>
                     </div>
@@ -184,6 +182,9 @@
             {% else %}
                 <p>No children information available.</p>
             {% endif %}
+
+
+            
 
         </div>
     </div>

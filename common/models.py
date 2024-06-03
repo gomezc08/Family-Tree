@@ -68,24 +68,33 @@ class Spouse(models.Model):
     def __str__(self):
         return f"{self.Spouse1ID} & {self.Spouse2ID}"
 
+
 class Household(models.Model):
-    ParentsID = models.OneToOneField(
+    Parent1ID = models.ForeignKey(
         Person,
-        related_name='child_relationships',
-        db_column='ParentsID',
+        related_name='parent1_relationships',
+        db_column='Parent1ID',
         on_delete=models.CASCADE
     )
-    ChildID = models.OneToOneField(
+    Parent2ID = models.ForeignKey(
         Person,
-        related_name='parent_relationships',
+        related_name='parent2_relationships',
+        db_column='Parent2ID',
+        null=True,  # Parent2ID can be NULL in the database
+        blank=True,  # Allow Parent2ID to be blank
+        on_delete=models.CASCADE
+    )
+    ChildID = models.ForeignKey(
+        Person,
+        related_name='child_relationships',
         db_column='ChildID',
         on_delete=models.CASCADE
     )
 
     class Meta:
-        managed = False
+        managed = False  # Tells Django not to manage this table (since it's managed by SQL directly)
         db_table = 'Household'
-        unique_together = ('ParentsID', 'ChildID')
+        unique_together = ('Parent1ID', 'ChildID')
 
     def __str__(self):
-        return f"{self.ParentsID} & {self.ChildID}"
+        return f"{self.Parent1ID} & {self.ChildID}"
