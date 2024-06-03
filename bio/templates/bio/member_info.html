@@ -156,7 +156,35 @@
             {% else %}
                 <p>No spouse information available.</p>
             {% endif %}
+
+            <h3>Parents</h3>
+            {% if parents %}
+                {% for parent in parents %}
+                    <div class="parent-info">
+                        <a href="{% url 'member_info' parent.Id %}">
+                            <img class="spouse-pic" src="{% static 'pic_location/' %}{{ parent.LastName }}{{ parent.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
+                            <p>{{ parent.FirstName }} {{ parent.LastName }}</p>
+                        </a>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No parent information available.</p>
+            {% endif %}
             
+            <h3>Children</h3>
+            {% if children %}
+                {% for child in children %}
+                    <div class="child-info">
+                        <a href="{% url 'member_info' child.Id %}">
+                            <img class="spouse-pic" src="{% static 'pic_location/' %}{{ child.LastName }}{{ child.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
+                            <p>{{ child.FirstName }} {{ child.LastName }}</p>
+                        </a>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No children information available.</p>
+            {% endif %}
+
         </div>
     </div>
 </body>
