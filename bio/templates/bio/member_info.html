@@ -241,6 +241,22 @@
             </div>
         </div>
 
+        <!-- Siblings Section -->
+<div class="family-section">
+    <div class="family-info">
+        {% if siblings %}
+        <h3><b>Siblings</b></h3>
+            {% for sibling in siblings %}
+                <a href="{% url 'member_info' sibling.Id %}">
+                    <img class="family-pic" src="{% static 'pic_location/' %}{{ sibling.LastName }}{{ sibling.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
+                    <p class="family-pic">{{ sibling.FirstName }} {{ sibling.LastName }}</p>
+                </a>
+            {% endfor %}
+        
+        {% endif %}
+    </div>
+</div>
+
         <!-- Children Section -->
         <div class="family-section">
             <div class="family-info">

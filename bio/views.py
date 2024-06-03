@@ -20,6 +20,9 @@ def get_member_info(request, PersonID):
         Q(child_relationships__Parent1ID=person) | Q(child_relationships__Parent2ID=person)
     )
 
+    siblings = Person.objects.filter(
+        Q(child_relationships__Parent1ID__in=parents) | Q(child_relationships__Parent2ID__in=parents)
+    ).exclude(Id=PersonID).distinct()
     
     # Retrieve interests
     interests = Interests.objects.filter(PersonID=person)
@@ -30,5 +33,6 @@ def get_member_info(request, PersonID):
         'parents': parents,
         'children': children,
         'interests': interests,
+        'siblings': siblings,
     }
     return render(request, 'bio/member_info.html', context)
