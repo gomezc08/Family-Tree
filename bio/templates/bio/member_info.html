@@ -7,7 +7,7 @@
     <style>
         body {
             text-align: left;
-            background-color: #FFC0D9;
+            background-color: #F8E8EE;
             font-family: "Lucida Console";
             display: flex;
             flex-direction: column; /* Ensure content stacks vertically */
@@ -16,6 +16,11 @@
             margin: 0;
             padding: 0; 
         }
+
+        h3 {
+            font-weight: normal; 
+          }
+          
         
         .header {
             padding: 30px;
@@ -52,12 +57,16 @@
         }
         
         .family-pic {
-            width: 150px;
-            height: 150px;
+            width: 100px;
+            height: 100px;
             object-fit: cover;
             border-radius: 50%;
             margin-bottom: 10px;
             transition: transform .5s;
+        }
+
+        .family-pic:hover {
+            transform: scale(1.5);
         }
 
         .profile-container {
@@ -65,10 +74,11 @@
             justify-content: center;
             align-items: center;
             height: 100vh; /* Adjust height as needed */
-            background-color: #FFF8E3;
+            background-color: #FFFFFF;
             width: 50%; /* Set width to 50% */
             margin: 0 auto; /* Center align horizontally */
             padding: 20px;
+            border-radius: 25px;
         }
         
         
@@ -159,94 +169,90 @@
     <div class="profile-container">
         <!-- Member Information -->
         <img class="profile-pic" src="{% static 'pic_location/' %}{{ person.LastName }}{{ person.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
-        <p><b>Birthday/Cumpleaños:</b> {{ person.Birthday }}</p>
+        <h3><b>Birthday/Cumpleaños:</b> {{ person.Birthday }}</h3>
         {% if person.get_gender_display %}
-            <p><b>Gender/Género:</b> {{ person.get_gender_display }}</p>
+            <h3><b>Gender/Género:</b> {{ person.get_gender_display }}</h3>
         {% endif %}
         {% if person.Email %}
-            <p><b>Email/Correo electrónico:</b> {{ person.Email }}</p>
+            <h3><b>Email/Correo electrónico:</b> {{ person.Email }}</h3>
         {% endif %}
         {% if person.Cell %}
-            <p><b>Cell/Celúla:</b> {{ person.Cell }}</p>
+            <h3><b>Cell/Celúla:</b> {{ person.Cell }}</h3>
         {% endif %}
         {% if person.CityBorn and person.StateBorn %}
-            <p><b>Location Born/lugar de nacimiento:</b> {{ person.CityBorn }}, {{ person.StateBorn }}</p>
+            <h3><b>Location Born/lugar de nacimiento:</b> {{ person.CityBorn }}, {{ person.StateBorn }}</h3>
         {% elif person.CityBorn %}
-            <p><b>City Born/ciudad nacida:</b> {{ person.CityBorn }}</p>
+            <h3><b>City Born/ciudad nacida:</b> {{ person.CityBorn }}</h3>
         {% elif person.StateBorn %}
-            <p><b>State Born/estado nacido:</b> {{ person.StateBorn }}</p>
+            <h3><b>State Born/estado nacido:</b> {{ person.StateBorn }}</h3>
         {% endif %}
         {% if person.CityCurrent and person.StateCurrent %}
-            <p><b>Current Location/ubicación actual:</b> {{ person.CityCurrent }}, {{ person.StateCurrent }}</p>
+            <h3><b>Current Location/ubicación actual:</b> {{ person.CityCurrent }}, {{ person.StateCurrent }}</h3>
         {% elif person.CityCurrent %}
-            <p><b>Current City/Ciudad Actual:</b> {{ person.CityCurrent }}</p>
+            <h3><b>Current City/Ciudad Actual:</b> {{ person.CityCurrent }}</h3>
         {% elif person.StateCurrent %}
-            <p><b>Current State/estado actual:</b> {{ person.StateCurrent }}</p>
+            <h3><b>Current State/estado actual:</b> {{ person.StateCurrent }}</h3>
         {% endif %}
 
-        <h3>Interests</h3>
+        <h3><b>Interests</b></h3>
         <ul>
             {% for i in interests %}
                 <li>{{ i.Interest }}</li>
             {% endfor %}
         </ul>
 
-        <h2>Relationships</h2>
 
         <!-- Spouse Section -->
         <div class="family-section">
-            <h3>Spouse</h3>
             <div class="family-info">
                 {% if spouse_relationships %}
+                <h3><b>Spouse</b></h3>
                     {% for spouse in spouse_relationships %}
                         {% if spouse.Spouse1ID.Id == person.Id %}
                             <a href="{% url 'member_info' spouse.Spouse2ID.Id %}">
                                 <img class="family-pic" src="{% static 'pic_location/' %}{{ spouse.Spouse2ID.LastName }}{{ spouse.Spouse2ID.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
-                                <p>{{ spouse.Spouse2ID.FirstName }} {{ spouse.Spouse2ID.LastName }}</p>
+                                <p class="family-pic">{{ spouse.Spouse2ID.FirstName }} {{ spouse.Spouse2ID.LastName }}</p>
                             </a>
                         {% else %}
                             <a href="{% url 'member_info' spouse.Spouse1ID.Id %}">
                                 <img class="family-pic" src="{% static 'pic_location/' %}{{ spouse.Spouse1ID.LastName }}{{ spouse.Spouse1ID.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
-                                <p>{{ spouse.Spouse1ID.FirstName }} {{ spouse.Spouse1ID.LastName }}</p>
+                                <p class="family-pic">{{ spouse.Spouse1ID.FirstName }} {{ spouse.Spouse1ID.LastName }}</p>
                             </a>
                         {% endif %}
                     {% endfor %}
-                {% else %}
-                    <p>No spouse information available.</p>
+                
                 {% endif %}
             </div>
         </div>
 
         <!-- Parents Section -->
         <div class="family-section">
-            <h3>Parents</h3>
             <div class="family-info">
                 {% if parents %}
+                <h3><b>Parents</b></h3>
                     {% for parent in parents %}
                         <a href="{% url 'member_info' parent.Id %}">
                             <img class="family-pic" src="{% static 'pic_location/' %}{{ parent.LastName }}{{ parent.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
-                            <p>{{ parent.FirstName }} {{ parent.LastName }}</p>
+                            <p class="family-pic">{{ parent.FirstName }} {{ parent.LastName }}</p>
                         </a>
                     {% endfor %}
-                {% else %}
-                    <p>No parent information available.</p>
+                
                 {% endif %}
             </div>
         </div>
 
         <!-- Children Section -->
         <div class="family-section">
-            <h3>Children</h3>
             <div class="family-info">
                 {% if children %}
+                <h3><b>Children</b></h3>
                     {% for child in children %}
                         <a href="{% url 'member_info' child.Id %}">
                             <img class="family-pic" src="{% static 'pic_location/' %}{{ child.LastName }}{{ child.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
-                            <p>{{ child.FirstName }} {{ child.LastName }}</p>
+                            <p class="family-pic">{{ child.FirstName }} {{ child.LastName }}</p>
                         </a>
                     {% endfor %}
-                {% else %}
-                    <p>No children information available.</p>
+                
                 {% endif %}
             </div>
         </div>
