@@ -235,12 +235,15 @@ class Manager:
         finally:
             self.connector.close_connection()
 
-    def create_household_relationship(self, parents_id, child_id):
+    def create_household_relationship(self, parents1_id, parents2_id, child_id):
         self.connector.open_connection()
         
+        if parents2_id == -100:
+            parents2_id = None
+        
         try:
-            query = "INSERT INTO Household (ParentsID, ChildID) VALUES (%s, %s)"
-            self.connector.cursor.execute(query, (parents_id, child_id))
+            query = "INSERT INTO Household (Parent1ID, Parent2ID, ChildID) VALUES (%s, %s, %s)"
+            self.connector.cursor.execute(query, (parents1_id, parents2_id, child_id))
             self.connector.cnx.commit()
 
         except Exception as e:

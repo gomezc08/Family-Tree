@@ -72,7 +72,7 @@
         {% for member in members %}
         <div class="member-card">
             <a href="{% url 'member_info' member.Id %}">
-                <img class="profile-pic" src="{% static 'pic_location/' %}{{member.LastName}}{{ member.FirstName}}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
+                <img class="profile-pic" src="{% static 'pic_location/' %}{{ member.LastName }}{{ member.FirstName }}.png" alt="{% if member.LastName and member.FirstName %}{% static 'pic_location/' %}{{ member.LastName }}{{ member.FirstName }}.png{% else %}{% static 'pic_location/DefaultPic.PNG' %}{% endif %}">
             </a>
             <p>{{ member.FirstName }} {{ member.LastName }}</p>
         </div>

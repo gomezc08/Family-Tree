@@ -96,7 +96,7 @@ def number2():
     first_name = input("Enter first name: ").strip()
     last_name = input("Enter last name: ").strip()
     birthday_str = input("Enter birthday (YYYY-MM-DD): ").strip()
-    age = input("Enter age: ").strip()
+    age = 10
     is_alive_str = input("Is the member alive? (yes/no): ").strip().lower()    
     is_alive = True if is_alive_str == 'yes' else False
     gender = input("Enter gender (Male/Female/Non-binary, optional): ").strip()
@@ -135,19 +135,29 @@ def number2():
         country_current = None
     
     manager_instance.add_member(first_name, last_name, birthday_str, is_alive, age, gender, pronouns, email, cell, city_born, state_born, country_born, city_current, state_current, country_born)
+    
     personID = manager_instance.get_id(first_name, last_name, birthday_str)
+    parentID1 = -100
+    parentID2 = -100
+    spouseID = -100
+    
     # establishing place in tree.
     # step 1: establishing parents.
+    hasParents = input("Wanna add ur parent(s)? (yes/no)")
+    if hasParents == "yes":
+        f1 = input("Parent First Name: ")
+        l1 = input("Parent Last Name: ")
+        b1 = input("Parent Birthday (YYYY-MM-DD): ")
+        parentID1 = manager_instance.get_id(f1, l1, b1)
     
-    answer1 = input("Wanna add parents? (yes/no): ")
-    if answer1 == "yes":
-        while answer1 == "yes":
+        hasParents1 = input("Wanna add parent 2? (yes/no): ")
+        if hasParents1 == "yes":
             f1 = input("Parent First Name: ")
             l1 = input("Parent Last Name: ")
             b1 = input("Parent Birthday (YYYY-MM-DD): ")
-            parentID = manager_instance.get_id(f1, l1, b1)
-            manager_instance.create_household_relationship(parentID, personID)
-            answer1 = input("Wanna establish another parent? (yes/no): ")
+            parentID2 = manager_instance.get_id(f1, l1, b1)
+        
+    manager_instance.create_household_relationship(parentID1, parentID2, personID)
     
     # step 2: establishing spouse.
     answer2 = input("Wanna establish spouse? (yes/no): ")
@@ -166,7 +176,7 @@ def number2():
             l3 = input("Child Last Name: ")
             b3 = input("Child Birthday (YYYY-MM-DD): ")
             childID = manager_instance.get_id(f3, l3, b3)
-            manager_instance.create_household_relationship(personID, childID)
+            manager_instance.create_household_relationship(personID, spouseID, childID)
             answer3 = input("Wanna establish another child? (yes/no): ")
     
     print("Okay! I've added it into the database. Thank you :)")
@@ -294,7 +304,7 @@ def number8():
         personID = manager_instance.get_id(first_name, last_name, birthday)
 
         # Define the destination directory
-        destination_directory = "./staticfiles/pic_location"
+        destination_directory = "./static/pic_location"
 
         # Ensure the destination directory exists
         if not os.path.exists(destination_directory):
