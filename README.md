@@ -13,7 +13,7 @@ FamiliaTree is a dynamic and interactive family tree website designed to help my
 Install with `python -m pip install -r ./requirements.txt` in the root directory of the project.
 
 ## Installation Steps
-- Clone the repo: `git clone`
+- Clone the repo: `git clone git@github.com:gomezc08/Family-Tree.git`
 - Create and activate a virtual environment:
   - `python -m venv venv`
   - `pipenv shell`
