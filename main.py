@@ -157,7 +157,7 @@ def number2():
             b1 = input("Parent Birthday (YYYY-MM-DD): ")
             parentID2 = manager_instance.get_id(f1, l1, b1)
         
-    manager_instance.create_household_relationship(parentID1, parentID2, personID)
+        manager_instance.create_household_relationship(parentID1, parentID2, personID)
     
     # step 2: establishing spouse.
     answer2 = input("Wanna establish spouse? (yes/no): ")

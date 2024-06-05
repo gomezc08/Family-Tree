@@ -86,55 +86,67 @@ class Manager:
             update_fields = []
             values = []
 
-            if first_name:
+            # Debug: Print initial values
+            print(f"Initial values: {locals()}")
+
+            if first_name is not None:
                 update_fields.append("FirstName = %s")
                 values.append(first_name)
-            if last_name:
+            if last_name is not None:
                 update_fields.append("LastName = %s")
                 values.append(last_name)
-            if birthday:
+            if birthday is not None:
                 update_fields.append("Birthday = %s")
                 values.append(birthday)
             if is_alive is not None:
                 update_fields.append("IsAlive = %s")
                 values.append(is_alive)
-            if age:
+            if age is not None:
+                try:
+                    age = int(age)
+                except ValueError:
+                    raise ValueError("Age must be an integer.")
                 update_fields.append("Age = %s")
                 values.append(age)
-            if gender:
+            if gender is not None:
                 update_fields.append("Gender = %s")
                 values.append(gender)
-            if pronouns:
+            if pronouns is not None:
                 update_fields.append("Pronouns = %s")
                 values.append(pronouns)
-            if email:
+            if email is not None:
                 update_fields.append("Email = %s")
                 values.append(email)
-            if cell:
+            if cell is not None:
                 update_fields.append("Cell = %s")
                 values.append(cell)
-            if city_born:
+            if city_born is not None:
                 update_fields.append("CityBorn = %s")
                 values.append(city_born)
-            if state_born:
+            if state_born is not None:
                 update_fields.append("StateBorn = %s")
                 values.append(state_born)
-            if country_born:
+            if country_born is not None:
                 update_fields.append("CountryBorn = %s")
                 values.append(country_born)
-            if city_current:
+            if city_current is not None:
                 update_fields.append("CityCurrent = %s")
                 values.append(city_current)
-            if state_current:
+            if state_current is not None:
                 update_fields.append("StateCurrent = %s")
                 values.append(state_current)
-            if country_current:
+            if country_current is not None:
                 update_fields.append("CountryCurrent = %s")
                 values.append(country_current)
 
             if update_fields:
                 query = f"UPDATE Person SET {', '.join(update_fields)} WHERE ID = %s"
                 values.append(person_id)
+
+                # Debug: Print query and values before execution
+                print(f"Executing query: {query}")
+                print(f"With values: {values}")
+
                 self.connector.cursor.execute(query, tuple(values))
                 self.connector.cnx.commit()
 
@@ -144,6 +156,7 @@ class Manager:
 
         finally:
             self.connector.close_connection()
+
 
     def add_interest(self, person_id, interest):
         self.connector.open_connection()
