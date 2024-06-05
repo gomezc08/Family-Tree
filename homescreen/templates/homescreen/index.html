@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Tree</title>
+<head>
+    <style>
+        body {
+            text-align: center;
+            background-color: #F8E8EE;
+            font-family: "Lucida Console"
+        }
+
+        p {
+            transition: transform .5s;
+        }
+
+        img {
+            transition: transform .5s;
+        }
+        
+        p:hover {
+            transform: scale(1.1);
+        }
+
+        img:hover {
+            transform: scale(1.5);
+        }
+
+        .header {
+            padding : 30px;
+        }
+
+        .header-grid {
+            display: block;
+            background-color: #FFFFFF;
+        }
+
+        .member-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            background-color: #FFFFFF;
+            padding: 20px 40px;
+            max-width: 80%;
+            margin: 0 auto; /* This centers the grid horizontally */
+        }
+        
+        
+
+        .member-card {
+            padding: 10px;
+            border-radius: 5px;
+            text-align : center;
+        }
+
+        .profile-pic {
+            width: 150px; 
+            height: 150px;
+            object-fit: cover; 
+            border-radius: 50%; 
+        }
+    </style>
+    {% load static %}
+</head>
+<body>
+    <div class="header-grid">
+        <h1 class="header">Family Tree</h1>
+    </div>
+    <div class="member-grid">
+        {% for member in members %}
+        <div class="member-card">
+            <a href="{% url 'member_info' member.Id %}">
+                <img class="profile-pic" src="{% static 'pic_location/' %}{{ member.LastName }}{{ member.FirstName }}.png" alt="{% if member.LastName and member.FirstName %}{% static 'pic_location/' %}{{ member.LastName }}{{ member.FirstName }}.png{% else %}{% static 'pic_location/DefaultPic.PNG' %}{% endif %}">
+            </a>
+            <p>{{ member.FirstName }} {{ member.LastName }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

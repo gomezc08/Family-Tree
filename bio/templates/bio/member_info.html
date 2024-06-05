@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Tree</title>
+    <style>
+        body {
+            text-align: left;
+            background-color: #F8E8EE;
+            font-family: "Lucida Console";
+            display: flex;
+            flex-direction: column; /* Ensure content stacks vertically */
+            align-items: center; 
+            min-height: 100vh; 
+            margin: 0;
+            padding: 0; 
+        }
+
+        h3 {
+            font-weight: normal; 
+          }
+          
+        
+        .header {
+            padding: 30px;
+            text-align: center; /* Center align text */
+            display: inline;
+        }
+        
+        .content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px; /* Adjust spacing between grid items */
+            max-width: 1200px;
+            margin-top: 30px; /* Add margin to separate header and content */
+            padding: 0 20px; /* Add padding for better spacing */
+            background-color: #FFF8E3;
+        }
+        
+        .family-section {
+            margin-bottom: 30px; /* Space between sections */
+        }
+        
+        .family-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px; /* Adjust spacing between family members */
+        }
+        
+        .family-info a {
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .family-pic {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 10px;
+            transition: transform .5s;
+        }
+
+        .family-pic:hover {
+            transform: scale(1.5);
+        }
+
+        .profile-container {
+            display: block;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Adjust height as needed */
+            background-color: #FFFFFF;
+            width: 50%; /* Set width to 50% */
+            margin: 0 auto; /* Center align horizontally */
+            padding: 20px;
+            border-radius: 25px;
+        }
+        
+        
+        .profile-pic {
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 10px;
+            transition: transform .5s;
+        }
+        
+        
+        .family-info p {
+            margin-top: 5px; /* Adjust spacing between pic and name */
+            text-align: center; /* Center text */
+        }
+        
+        .button {
+            appearance: none;
+            background-color: #FFFFFF;
+            border-radius: 40em;
+            border-style: none;
+            box-shadow: #ADCFFF 0 -12px 6px inset;
+            box-sizing: border-box;
+            color: #000000;
+            cursor: pointer;
+            display: inline-block;
+            font-family: -apple-system, sans-serif;
+            font-size: 0.9rem; /* Smaller font size */
+            font-weight: 700;
+            letter-spacing: -.24px;
+            margin: 0;
+            outline: none;
+            padding: 0.5rem 1rem; 
+            quotes: auto;
+            text-align: center;
+            text-decoration: none;
+            transition: all .15s;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+        
+        .button:hover {
+            background-color: #FFC229;
+            box-shadow: #FF6314 0 -6px 8px inset;
+            transform: scale(1.125);
+        }
+        
+        .button:active {
+            transform: scale(1.025);
+        }
+        
+        .button-link {
+            position: absolute;
+            left: 0;
+            padding-left: 20px;
+        }
+        
+        @media (min-width: 768px) {
+            .content {
+                grid-template-columns: repeat(4, 1fr); /* 4 columns on larger screens */
+            }
+        
+            .family-section {
+                grid-column: span 2; /* Each section spans two columns on larger screens */
+            }
+        }
+        
+        .content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px; 
+        }
+        
+    </style>
+    {% load static %}
+</head>
+<body>
+    <div class="header">
+        <a href="http://127.0.0.1:8000/" class="button-link">
+            <button class="button" role="button">Home</button>
+        </a>
+        <h1>{{ person.FirstName }} {{ person.LastName }}</h1>
+    </div>
+
+    <div class="profile-container">
+        <!-- Member Information -->
+        <img class="profile-pic" src="{% static 'pic_location/' %}{{ person.LastName }}{{ person.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
+        <h3><b>Birthday/Cumpleaños:</b> {{ person.Birthday }}</h3>
+        {% if person.get_gender_display %}
+            <h3><b>Gender/Género:</b> {{ person.get_gender_display }}</h3>
+        {% endif %}
+        {% if person.Email %}
+            <h3><b>Email/Correo electrónico:</b> {{ person.Email }}</h3>
+        {% endif %}
+        {% if person.Cell %}
+            <h3><b>Cell/Celúla:</b> {{ person.Cell }}</h3>
+        {% endif %}
+        {% if person.CityBorn and person.StateBorn %}
+            <h3><b>Location Born/lugar de nacimiento:</b> {{ person.CityBorn }}, {{ person.StateBorn }}</h3>
+        {% elif person.CityBorn %}
+            <h3><b>City Born/ciudad nacida:</b> {{ person.CityBorn }}</h3>
+        {% elif person.StateBorn %}
+            <h3><b>State Born/estado nacido:</b> {{ person.StateBorn }}</h3>
+        {% endif %}
+        {% if person.CityCurrent and person.StateCurrent %}
+            <h3><b>Current Location/ubicación actual:</b> {{ person.CityCurrent }}, {{ person.StateCurrent }}</h3>
+        {% elif person.CityCurrent %}
+            <h3><b>Current City/Ciudad Actual:</b> {{ person.CityCurrent }}</h3>
+        {% elif person.StateCurrent %}
+            <h3><b>Current State/estado actual:</b> {{ person.StateCurrent }}</h3>
+        {% endif %}
+
+        <h3><b>Interests</b></h3>
+        <ul>
+            {% for i in interests %}
+                <li>{{ i.Interest }}</li>
+            {% endfor %}
+        </ul>
+
+
+        <!-- Spouse Section -->
+        <div class="family-section">
+            <div class="family-info">
+                {% if spouse_relationships %}
+                <h3><b>Spouse</b></h3>
+                    {% for spouse in spouse_relationships %}
+                        {% if spouse.Spouse1ID.Id == person.Id %}
+                            <a href="{% url 'member_info' spouse.Spouse2ID.Id %}">
+                                <img class="family-pic" src="{% static 'pic_location/' %}{{ spouse.Spouse2ID.LastName }}{{ spouse.Spouse2ID.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
+                                <p class="family-pic">{{ spouse.Spouse2ID.FirstName }} {{ spouse.Spouse2ID.LastName }}</p>
+                            </a>
+                        {% else %}
+                            <a href="{% url 'member_info' spouse.Spouse1ID.Id %}">
+                                <img class="family-pic" src="{% static 'pic_location/' %}{{ spouse.Spouse1ID.LastName }}{{ spouse.Spouse1ID.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
+                                <p class="family-pic">{{ spouse.Spouse1ID.FirstName }} {{ spouse.Spouse1ID.LastName }}</p>
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Parents Section -->
+        <div class="family-section">
+            <div class="family-info">
+                {% if parents %}
+                <h3><b>Parents</b></h3>
+                    {% for parent in parents %}
+                        <a href="{% url 'member_info' parent.Id %}">
+                            <img class="family-pic" src="{% static 'pic_location/' %}{{ parent.LastName }}{{ parent.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
+                            <p class="family-pic">{{ parent.FirstName }} {{ parent.LastName }}</p>
+                        </a>
+                    {% endfor %}
+                
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Siblings Section -->
+<div class="family-section">
+    <div class="family-info">
+        {% if siblings %}
+        <h3><b>Siblings</b></h3>
+            {% for sibling in siblings %}
+                <a href="{% url 'member_info' sibling.Id %}">
+                    <img class="family-pic" src="{% static 'pic_location/' %}{{ sibling.LastName }}{{ sibling.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
+                    <p class="family-pic">{{ sibling.FirstName }} {{ sibling.LastName }}</p>
+                </a>
+            {% endfor %}
+        
+        {% endif %}
+    </div>
+</div>
+
+        <!-- Children Section -->
+        <div class="family-section">
+            <div class="family-info">
+                {% if children %}
+                <h3><b>Children</b></h3>
+                    {% for child in children %}
+                        <a href="{% url 'member_info' child.Id %}">
+                            <img class="family-pic" src="{% static 'pic_location/' %}{{ child.LastName }}{{ child.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
+                            <p class="family-pic">{{ child.FirstName }} {{ child.LastName }}</p>
+                        </a>
+                    {% endfor %}
+                
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
