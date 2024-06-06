@@ -197,7 +197,7 @@
             <h3><b>Current State/estado actual:</b> {{ person.StateCurrent }}</h3>
         {% endif %}
 
-        <h3><b>Interests</b></h3>
+        <h3><b>Interests/Intereses</b></h3>
         <ul>
             {% for i in interests %}
                 <li>{{ i.Interest }}</li>
@@ -209,7 +209,7 @@
 <div class="family-section">
     <div class="family-info">
         {% if spouse_relationships %}
-        <h3><b>Spouse</b></h3>
+        <h3><b>Spouse/Esposo/a</b></h3>
             {% for spouse in spouse_relationships %}
                 {% if spouse.Spouse1ID.Id == person.Id %}
                     <a href="{% url 'member_info' spouse.Spouse2ID.Id %}">
@@ -237,7 +237,7 @@
 <div class="family-section">
     <div class="family-info">
         {% if parents %}
-        <h3><b>Parents</b></h3>
+        <h3><b>Parents/Padres</b></h3>
             {% for parent in parents %}
                 <a href="{% url 'member_info' parent.Id %}">
                     <img class="family-pic" 
@@ -255,7 +255,7 @@
 <div class="family-section">
     <div class="family-info">
         {% if siblings %}
-        <h3><b>Siblings</b></h3>
+        <h3><b>Siblings/Hermanos/as</b></h3>
             {% for sibling in siblings %}
                 <a href="{% url 'member_info' sibling.Id %}">
                     <img class="family-pic" 
@@ -273,7 +273,7 @@
 <div class="family-section">
     <div class="family-info">
         {% if children %}
-        <h3><b>Children</b></h3>
+        <h3><b>Children/Niños/as</b></h3>
             {% for child in children %}
                 <a href="{% url 'member_info' child.Id %}">
                     <img class="family-pic" 
