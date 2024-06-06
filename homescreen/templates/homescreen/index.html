@@ -34,7 +34,6 @@
 
         .header-grid {
             display: block;
-            background-color: #FFFFFF;
         }
 
         .member-grid {
@@ -72,7 +71,9 @@
         {% for member in members %}
         <div class="member-card">
             <a href="{% url 'member_info' member.Id %}">
-                <img class="profile-pic" src="{% static 'pic_location/' %}{{ member.LastName }}{{ member.FirstName }}.png" alt="{% if member.LastName and member.FirstName %}{% static 'pic_location/' %}{{ member.LastName }}{{ member.FirstName }}.png{% else %}{% static 'pic_location/DefaultPic.PNG' %}{% endif %}">
+                <img class="profile-pic" 
+                    src="{% static 'pic_location/' %}{{ member.LastName }}{{ member.FirstName }}.png" 
+                    onerror="this.onerror=null; this.src='{% static 'pic_location/DefaultPic.PNG' %}';">
             </a>
             <p>{{ member.FirstName }} {{ member.LastName }}</p>
         </div>

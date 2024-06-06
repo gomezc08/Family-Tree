@@ -79,6 +79,7 @@
             margin: 0 auto; /* Center align horizontally */
             padding: 20px;
             border-radius: 25px;
+            height: 100%;
         }
         
         
@@ -168,7 +169,9 @@
 
     <div class="profile-container">
         <!-- Member Information -->
-        <img class="profile-pic" src="{% static 'pic_location/' %}{{ person.LastName }}{{ person.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
+        <img class="profile-pic" 
+                    src="{% static 'pic_location/' %}{{ person.LastName }}{{ person.FirstName }}.png" 
+                    onerror="this.onerror=null; this.src='{% static 'pic_location/DefaultPic.PNG' %}';">
         <h3><b>Birthday/Cumpleaños:</b> {{ person.Birthday }}</h3>
         {% if person.get_gender_display %}
             <h3><b>Gender/Género:</b> {{ person.get_gender_display }}</h3>
@@ -203,75 +206,84 @@
 
 
         <!-- Spouse Section -->
-        <div class="family-section">
-            <div class="family-info">
-                {% if spouse_relationships %}
-                <h3><b>Spouse</b></h3>
-                    {% for spouse in spouse_relationships %}
-                        {% if spouse.Spouse1ID.Id == person.Id %}
-                            <a href="{% url 'member_info' spouse.Spouse2ID.Id %}">
-                                <img class="family-pic" src="{% static 'pic_location/' %}{{ spouse.Spouse2ID.LastName }}{{ spouse.Spouse2ID.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
-                                <p class="family-pic">{{ spouse.Spouse2ID.FirstName }} {{ spouse.Spouse2ID.LastName }}</p>
-                            </a>
-                        {% else %}
-                            <a href="{% url 'member_info' spouse.Spouse1ID.Id %}">
-                                <img class="family-pic" src="{% static 'pic_location/' %}{{ spouse.Spouse1ID.LastName }}{{ spouse.Spouse1ID.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
-                                <p class="family-pic">{{ spouse.Spouse1ID.FirstName }} {{ spouse.Spouse1ID.LastName }}</p>
-                            </a>
-                        {% endif %}
-                    {% endfor %}
-                
+<div class="family-section">
+    <div class="family-info">
+        {% if spouse_relationships %}
+        <h3><b>Spouse</b></h3>
+            {% for spouse in spouse_relationships %}
+                {% if spouse.Spouse1ID.Id == person.Id %}
+                    <a href="{% url 'member_info' spouse.Spouse2ID.Id %}">
+                        <img class="family-pic" 
+                             src="{% static 'pic_location/' %}{{ spouse.Spouse2ID.LastName }}{{ spouse.Spouse2ID.FirstName }}.png" 
+                             onerror="this.onerror=null; this.src='{% static 'pic_location/DefaultPic.png' %}';" 
+                             alt="{{ spouse.Spouse2ID.FirstName }} {{ spouse.Spouse2ID.LastName }}">
+                        <p class="family-pic">{{ spouse.Spouse2ID.FirstName }} {{ spouse.Spouse2ID.LastName }}</p>
+                    </a>
+                {% else %}
+                    <a href="{% url 'member_info' spouse.Spouse1ID.Id %}">
+                        <img class="family-pic" 
+                             src="{% static 'pic_location/' %}{{ spouse.Spouse1ID.LastName }}{{ spouse.Spouse1ID.FirstName }}.png" 
+                             onerror="this.onerror=null; this.src='{% static 'pic_location/DefaultPic.png' %}';" 
+                             alt="{{ spouse.Spouse1ID.FirstName }} {{ spouse.Spouse1ID.LastName }}">
+                        <p class="family-pic">{{ spouse.Spouse1ID.FirstName }} {{ spouse.Spouse1ID.LastName }}</p>
+                    </a>
                 {% endif %}
-            </div>
-        </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
 
-        <!-- Parents Section -->
-        <div class="family-section">
-            <div class="family-info">
-                {% if parents %}
-                <h3><b>Parents</b></h3>
-                    {% for parent in parents %}
-                        <a href="{% url 'member_info' parent.Id %}">
-                            <img class="family-pic" src="{% static 'pic_location/' %}{{ parent.LastName }}{{ parent.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
-                            <p class="family-pic">{{ parent.FirstName }} {{ parent.LastName }}</p>
-                        </a>
-                    {% endfor %}
-                
-                {% endif %}
-            </div>
-        </div>
+<!-- Parents Section -->
+<div class="family-section">
+    <div class="family-info">
+        {% if parents %}
+        <h3><b>Parents</b></h3>
+            {% for parent in parents %}
+                <a href="{% url 'member_info' parent.Id %}">
+                    <img class="family-pic" 
+                         src="{% static 'pic_location/' %}{{ parent.LastName }}{{ parent.FirstName }}.png" 
+                         onerror="this.onerror=null; this.src='{% static 'pic_location/DefaultPic.png' %}';" 
+                         alt="{{ parent.FirstName }} {{ parent.LastName }}">
+                    <p class="family-pic">{{ parent.FirstName }} {{ parent.LastName }}</p>
+                </a>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
 
-        <!-- Siblings Section -->
+<!-- Siblings Section -->
 <div class="family-section">
     <div class="family-info">
         {% if siblings %}
         <h3><b>Siblings</b></h3>
             {% for sibling in siblings %}
                 <a href="{% url 'member_info' sibling.Id %}">
-                    <img class="family-pic" src="{% static 'pic_location/' %}{{ sibling.LastName }}{{ sibling.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
+                    <img class="family-pic" 
+                         src="{% static 'pic_location/' %}{{ sibling.LastName }}{{ sibling.FirstName }}.png" 
+                         onerror="this.onerror=null; this.src='{% static 'pic_location/DefaultPic.png' %}';" 
+                         alt="{{ sibling.FirstName }} {{ sibling.LastName }}">
                     <p class="family-pic">{{ sibling.FirstName }} {{ sibling.LastName }}</p>
+                </a>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+
+<!-- Children Section -->
+<div class="family-section">
+    <div class="family-info">
+        {% if children %}
+        <h3><b>Children</b></h3>
+            {% for child in children %}
+                <a href="{% url 'member_info' child.Id %}">
+                    <img class="family-pic" src="{% static 'pic_location/' %}{{ child.LastName }}{{ child.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
+                    <p class="family-pic">{{ child.FirstName }} {{ child.LastName }}</p>
                 </a>
             {% endfor %}
         
         {% endif %}
     </div>
 </div>
-
-        <!-- Children Section -->
-        <div class="family-section">
-            <div class="family-info">
-                {% if children %}
-                <h3><b>Children</b></h3>
-                    {% for child in children %}
-                        <a href="{% url 'member_info' child.Id %}">
-                            <img class="family-pic" src="{% static 'pic_location/' %}{{ child.LastName }}{{ child.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
-                            <p class="family-pic">{{ child.FirstName }} {{ child.LastName }}</p>
-                        </a>
-                    {% endfor %}
-                
-                {% endif %}
-            </div>
-        </div>
-    </div>
+</div>
 </body>
 </html>
