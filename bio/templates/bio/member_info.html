@@ -276,11 +276,13 @@
         <h3><b>Children</b></h3>
             {% for child in children %}
                 <a href="{% url 'member_info' child.Id %}">
-                    <img class="family-pic" src="{% static 'pic_location/' %}{{ child.LastName }}{{ child.FirstName }}.png" alt="{% static 'pic_location/DefaultPic.png' %}">
+                    <img class="family-pic" 
+                         src="{% static 'pic_location/' %}{{ child.LastName }}{{ child.FirstName }}.png" 
+                         onerror="this.onerror=null; this.src='{% static 'pic_location/DefaultPic.png' %}';" 
+                         alt="{{ child.FirstName }} {{ child.LastName }}">
                     <p class="family-pic">{{ child.FirstName }} {{ child.LastName }}</p>
                 </a>
             {% endfor %}
-        
         {% endif %}
     </div>
 </div>
