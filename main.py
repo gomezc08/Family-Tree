@@ -40,13 +40,13 @@ def main():
 
 
 def number1():
+    manager_instance = Manager.Manager()  # Adjust this based on the actual class name
+    
     first_name = input("Enter first name: ")
     last_name = input("Enter last name: ")
     birthday = input("Enter bday (YYYY-MM-DD): ")
     
-    manager_instance = Manager.Manager()  # Adjust this based on the actual class name
     personID = manager_instance.get_id(first_name, last_name, birthday)
-    
     
     # Call view_member_information on the manager_instance
     result1 = manager_instance.view_member_information(first_name, last_name, birthday)
@@ -58,7 +58,8 @@ def number1():
     print(f"\tFirst Name: {member_info[1]}")
     print(f"\tLast Name: {member_info[2]}")
     print(f"\tBirthday: {member_info[3]}")
-    print(f"\tAge: {member_info[5]}")
+    print(f"\tNickname: {member_info[4]}")
+    print(f"\tYearDied: {member_info[5]}")
     print(f"\tGender: {member_info[6]}")
     print(f"\tPronouns: {member_info[7]}")
     print(f"\tEmail: {member_info[8]}")
@@ -96,9 +97,8 @@ def number2():
     first_name = input("Enter first name: ").strip()
     last_name = input("Enter last name: ").strip()
     birthday_str = input("Enter birthday (YYYY-MM-DD): ").strip()
-    age = 10
-    is_alive_str = input("Is the member alive? (yes/no): ").strip().lower()    
-    is_alive = True if is_alive_str == 'yes' else False
+    nick_name = input("Enter nickname (optional): ").strip()
+    year_died = input("Enter year died (optional): ").strip()
     gender = input("Enter gender (Male/Female/Non-binary, optional): ").strip()
     pronouns = input("Enter pronouns (optional): ").strip()
     email = input("Enter email (optional): ").strip()
@@ -111,6 +111,10 @@ def number2():
     country_current = input("Enter current country (optional): ").strip()
     
     # Handle empty inputs
+    if not nick_name:
+        nick_name = None
+    if not year_died:
+        year_died = None
     if not birthday_str:
         birthday_str = None
     if not gender:
@@ -134,7 +138,7 @@ def number2():
     if not country_current:
         country_current = None
     
-    manager_instance.add_member(first_name, last_name, birthday_str, is_alive, age, gender, pronouns, email, cell, city_born, state_born, country_born, city_current, state_current, country_born)
+    manager_instance.add_member(first_name, last_name, birthday_str, nick_name, year_died, gender, pronouns, email, cell, city_born, state_born, country_born, city_current, state_current, country_born)
     
     personID = manager_instance.get_id(first_name, last_name, birthday_str)
     parentID1 = -100
@@ -188,9 +192,8 @@ def number3():
     first_name = input("Enter first name: ").strip()
     last_name = input("Enter last name: ").strip()
     birthday_str = input("Enter birthday (YYYY-MM-DD): ").strip()
-    age = input("Enter age: ").strip()
-    is_alive_str = input("Is the member alive? (yes/no): ").strip().lower()    
-    is_alive = True if is_alive_str == 'yes' else False
+    nick_name = input("Enter nickname (optional): ").strip()
+    year_died = input("Enter year died (optional): ").strip()
     gender = input("Enter gender (Male/Female/Non-binary, optional): ").strip()
     pronouns = input("Enter pronouns (optional): ").strip()
     email = input("Enter email (optional): ").strip()
@@ -203,6 +206,10 @@ def number3():
     country_current = input("Enter current country (optional): ").strip()
     
     # Handle empty inputs
+    if not nick_name:
+        nick_name = None
+    if not year_died:
+        year_died = None
     if not birthday_str:
         birthday_str = None
     if not gender:
@@ -226,7 +233,7 @@ def number3():
     if not country_current:
         country_current = None
     
-    manager_instance.update_member(first_name, last_name, birthday_str, is_alive, age, gender, pronouns, email, cell, city_born, state_born, country_born, city_current, state_current, country_born)
+    manager_instance.update_member(first_name, last_name, birthday_str, nick_name, year_died, gender, pronouns, email, cell, city_born, state_born, country_born, city_current, state_current, country_born)
     print(f"okay I have updated {first_name} :)")
     
 # marriage.
@@ -235,13 +242,14 @@ def number4():
     first_name1 = input("Enter first name of person 1: ").strip()
     last_name1 = input("Enter last name of person 1: ").strip()
     birthday_str1 = input("Enter birthday of person 1 (YYYY-MM-DD): ").strip()
-    manager_instance.get_id(first_name1, last_name1, birthday_str1)
+    p1 = manager_instance.get_id(first_name1, last_name1, birthday_str1)
     
     first_name2 = input("Enter first name of person 2: ").strip()
     last_name2 = input("Enter last name of person 2: ").strip()
     birthday_str2 = input("Enter birthday of person 2 (YYYY-MM-DD): ").strip()
-    manager_instance.get_id(first_name2, last_name2, birthday_str2)
+    p2 = manager_instance.get_id(first_name2, last_name2, birthday_str2)
     
+    manager_instance.create_spouse_relationship(p1, p2)
     print(f"Okay! {first_name1} and {first_name2} are married.")
 
 def number5():

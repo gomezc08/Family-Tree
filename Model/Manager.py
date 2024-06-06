@@ -28,15 +28,15 @@ class Manager:
         self.connector = Connector()
         self.filter_type = {"Age, Alive, Dead, Last Name, Gender"}
 
-    def add_member(self, first_name, last_name, birthday, is_alive=True, age=None, gender=None, pronouns=None, email=None, cell=None, city_born=None, state_born=None, country_born=None, city_current=None, state_current=None, country_current=None):
+    def add_member(self, first_name, last_name, birthday, Nickname=None, YearDied=None, gender=None, pronouns=None, email=None, cell=None, city_born=None, state_born=None, country_born=None, city_current=None, state_current=None, country_current=None):
         self.connector.open_connection()
         
         try:
             query = """
-            INSERT INTO Person (FirstName, LastName, Birthday, IsAlive, Age, Gender, Pronouns, Email, Cell, CityBorn, StateBorn, CountryBorn, CityCurrent, StateCurrent, CountryCurrent) 
+            INSERT INTO Person (FirstName, LastName, Birthday, Nickname, YearDied, Gender, Pronouns, Email, Cell, CityBorn, StateBorn, CountryBorn, CityCurrent, StateCurrent, CountryCurrent) 
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """
-            values = (first_name, last_name, birthday, is_alive, age, gender, pronouns, email, cell, city_born, state_born, country_born, city_current, state_current, country_current)
+            values = (first_name, last_name, birthday, Nickname, YearDied, gender, pronouns, email, cell, city_born, state_born, country_born, city_current, state_current, country_current)
             self.connector.cursor.execute(query, values)
             self.connector.cnx.commit()
 
@@ -295,6 +295,8 @@ class Manager:
         finally:
             self.connector.close_connection()
 
+        print(id)
+        print(id[0])
         return id[0]
     
     def get_parents_id(self, child_id):

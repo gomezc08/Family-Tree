@@ -164,7 +164,7 @@
         <a href="http://127.0.0.1:8000/" class="button-link">
             <button class="button" role="button">Home</button>
         </a>
-        <h1>{{ person.FirstName }} {{ person.LastName }}</h1>
+        <h1>{{ person.FirstName }} {% if person.Nickname %}"{{ person.Nickname }}" {% endif %}{{ person.LastName }}</h1>
     </div>
 
     <div class="profile-container">
