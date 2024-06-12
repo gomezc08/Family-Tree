@@ -16,15 +16,12 @@
             transition: transform .5s;
         }
 
-        img {
-            transition: transform .5s;
-        }
         
         p:hover {
             transform: scale(1.1);
         }
 
-        img:hover {
+        .profile-pic:hover {
             transform: scale(1.5);
         }
 
@@ -59,18 +56,20 @@
             height: 150px;
             object-fit: cover; 
             border-radius: 50%; 
+            transition: transform .5s;
         }
 
         .logo {
-            width: 130px;
+            display: flex;
+            padding-left: 0%;
+            width: 100px;
         }
     </style>
     {% load static %}
 </head>
 <body>
     <div class="header-grid">
-        <h1 class="header">FamLink</h1>
-        <img class=logo src="{% static 'pic_location/famlink_logo' %}.png"></img>
+        <img class="logo" src="{% static 'pic_location/famlink_logo' %}.png"></img>
     </div>
     <div class="member-grid">
         {% for member in members %}
