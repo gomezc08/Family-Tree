@@ -60,12 +60,17 @@
             object-fit: cover; 
             border-radius: 50%; 
         }
+
+        .logo {
+            width: 130px;
+        }
     </style>
     {% load static %}
 </head>
 <body>
     <div class="header-grid">
         <h1 class="header">FamLink</h1>
+        <img class=logo src="{% static 'pic_location/famlink_logo' %}.png"></img>
     </div>
     <div class="member-grid">
         {% for member in members %}
