@@ -155,6 +155,8 @@
             grid-template-columns: 2fr 1fr;
             gap: 20px; 
         }
+
+        
         
     </style>
     {% load static %}
@@ -190,19 +192,24 @@
             <h3><b>State Born/estado nacido:</b> {{ person.StateBorn }}</h3>
         {% endif %}
         {% if person.CityCurrent and person.StateCurrent %}
-            <h3><b>Current Location/ubicación actual:</b> {{ person.CityCurrent }}, {{ person.StateCurrent }}</h3>
+            <h3><b>Current Location/ubicación Actual:</b> {{ person.CityCurrent }}, {{ person.StateCurrent }}</h3>
         {% elif person.CityCurrent %}
             <h3><b>Current City/Ciudad Actual:</b> {{ person.CityCurrent }}</h3>
         {% elif person.StateCurrent %}
-            <h3><b>Current State/estado actual:</b> {{ person.StateCurrent }}</h3>
+            <h3><b>Current State/estado Actual:</b> {{ person.StateCurrent }}</h3>
         {% endif %}
-
-        <h3><b>Interests/Intereses</b></h3>
-        <ul>
-            {% for i in interests %}
-                <li>{{ i.Interest }}</li>
-            {% endfor %}
-        </ul>
+        {% if person.YearDied != NULL%}
+            <h3><b>Year Died/Año Muerto: </b>{{ person.YearDied }} </h3>
+        {% endif %}
+        
+        {% if interests %}
+            <h3><b>Interests/Intereses</b></h3>
+            <ul>
+                {% for i in interests %}
+                    <li>{{ i.Interest }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
 
 
         <!-- Spouse Section -->
@@ -253,17 +260,19 @@
 
 <!-- Siblings Section -->
 <div class="family-section">
-    <div class="family-info">
+    <div class="family-info flex-container">
         {% if siblings %}
         <h3><b>Siblings/Hermanos/as</b></h3>
             {% for sibling in siblings %}
-                <a href="{% url 'member_info' sibling.Id %}">
-                    <img class="family-pic" 
-                         src="{% static 'pic_location/' %}{{ sibling.LastName }}{{ sibling.FirstName }}.png" 
-                         onerror="this.onerror=null; this.src='{% static 'pic_location/DefaultPic.png' %}';" 
-                         alt="{{ sibling.FirstName }} {{ sibling.LastName }}">
-                    <p class="family-pic">{{ sibling.FirstName }} {{ sibling.LastName }}</p>
-                </a>
+                <div class="flex-item">
+                    <a href="{% url 'member_info' sibling.Id %}">
+                        <img class="family-pic" 
+                             src="{% static 'pic_location/' %}{{ sibling.LastName }}{{ sibling.FirstName }}.png" 
+                             onerror="this.onerror=null; this.src='{% static 'pic_location/DefaultPic.png' %}';" 
+                             alt="{{ sibling.FirstName }} {{ sibling.LastName }}">
+                        <p class="family-pic">{{ sibling.FirstName }} {{ sibling.LastName }}</p>
+                    </a>
+                </div>
             {% endfor %}
         {% endif %}
     </div>
@@ -271,21 +280,24 @@
 
 <!-- Children Section -->
 <div class="family-section">
-    <div class="family-info">
+    <div class="family-info flex-container">
         {% if children %}
         <h3><b>Children/Niños/as</b></h3>
             {% for child in children %}
-                <a href="{% url 'member_info' child.Id %}">
-                    <img class="family-pic" 
-                         src="{% static 'pic_location/' %}{{ child.LastName }}{{ child.FirstName }}.png" 
-                         onerror="this.onerror=null; this.src='{% static 'pic_location/DefaultPic.png' %}';" 
-                         alt="{{ child.FirstName }} {{ child.LastName }}">
-                    <p class="family-pic">{{ child.FirstName }} {{ child.LastName }}</p>
-                </a>
+                <div class="flex-item">
+                    <a href="{% url 'member_info' child.Id %}">
+                        <img class="family-pic" 
+                             src="{% static 'pic_location/' %}{{ child.LastName }}{{ child.FirstName }}.png" 
+                             onerror="this.onerror=null; this.src='{% static 'pic_location/DefaultPic.png' %}';" 
+                             alt="{{ child.FirstName }} {{ child.LastName }}">
+                        <p class="family-pic">{{ child.FirstName }} {{ child.LastName }}</p>
+                    </a>
+                </div>
             {% endfor %}
         {% endif %}
     </div>
 </div>
+
 </div>
 </body>
 </html>
