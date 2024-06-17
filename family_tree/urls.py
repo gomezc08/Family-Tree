@@ -23,5 +23,6 @@ urlpatterns = [
     path('', index, name='index'),
     path('bio/', include('bio.urls')),
     path('bio/', include('bio.urls')),
+    path('form/', include('member_info.urls'))
     #path('', include('common.urls'))
 ]

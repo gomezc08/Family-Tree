@@ -17,6 +17,20 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+# main_project/settings.py
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com' 
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'Kimigomez10@gmail.com'  
+EMAIL_HOST_PASSWORD = 'sbfd aeun tnww ofvm' 
+
+
+
+# Make sure to secure your credentials using environment variables or Django's secrets management
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -40,7 +54,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'common',
     'homescreen',
-    'bio'
+    'bio',
+    'member_info'
 ]
 
 MIDDLEWARE = [
