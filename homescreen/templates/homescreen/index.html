@@ -9,14 +9,13 @@
         body {
             text-align: center;
             background-color: #F8E8EE;
-            font-family: "Lucida Console"
+            font-family: "Lucida Console";
         }
 
         p {
             transition: transform .5s;
         }
 
-        
         p:hover {
             transform: scale(1.1);
         }
@@ -26,11 +25,16 @@
         }
 
         .header {
-            padding : 30px;
+            padding: 30px;
         }
 
         .header-grid {
-            display: block;
+            display: flex;
+            align-items: center; /* Align items vertically in the center */
+            justify-content: space-between; /* Optional: Distribute space between elements */
+            padding: 20px;
+            max-width: 80%;
+            margin: 0 auto; /* This centers the header-grid horizontally */
         }
 
         .member-grid {
@@ -43,12 +47,10 @@
             margin: 0 auto; /* This centers the grid horizontally */
         }
         
-        
-
         .member-card {
             padding: 10px;
             border-radius: 5px;
-            text-align : center;
+            text-align: center;
         }
 
         .profile-pic {
@@ -60,17 +62,56 @@
         }
 
         .logo {
-            display: flex;
-            padding-left: 0%;
             width: 100px;
+        }
+
+        .button-link {
+            padding-left: 20px;
+        }
+
+        .button {
+            display: flex;
+            appearance: none;
+            background-color: #FFFFFF;
+            border-radius: 40em;
+            border-style: none;
+            box-shadow: #ADCFFF 0 -12px 6px inset;
+            box-sizing: border-box;
+            color: #000000;
+            cursor: pointer;
+            font-family: -apple-system, sans-serif;
+            font-size: 0.9rem; /* Smaller font size */
+            font-weight: 700;
+            letter-spacing: -.24px;
+            margin: 0;
+            outline: none;
+            padding: 0.5rem 1rem; 
+            quotes: auto;
+            text-align: center;
+            text-decoration: none;
+            transition: all .15s;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+        
+        .button:hover {
+            background-color: #FFC229;
+            box-shadow: #FF6314 0 -6px 8px inset;
+            transform: scale(1.125);
+        }
+        
+        .button:active {
+            transform: scale(1.025);
         }
     </style>
     {% load static %}
 </head>
 <body>
     <div class="header-grid">
-        <a href="http://127.0.0.1:8000/">
-            <img class="logo" src="{% static 'pic_location/famlink_logo' %}.png"></img>
+        <img class="logo" src="{% static 'pic_location/famlink_logo' %}.png" alt="Family Tree Logo">
+        <a href="{% url 'member_info' %}" class="button-link">
+            <button class="button" role="button">Add/Poner Info</button>
         </a>
     </div>
     <div class="member-grid">
@@ -79,7 +120,7 @@
             <a href="{% url 'member_info' member.Id %}">
                 <img class="profile-pic" 
                     src="{% static 'pic_location/' %}{{ member.LastName }}{{ member.FirstName }}.png" 
-                    onerror="this.onerror=null; this.src='{% static 'pic_location/DefaultPic.PNG' %}';">
+                    onerror="this.onerror=null; this.src='{% static 'pic_location/DefaultPic.PNG' %}';" alt="{{ member.FirstName }} {{ member.LastName }}">
             </a>
             <p>{{ member.FirstName }} {{ member.LastName }}</p>
         </div>
