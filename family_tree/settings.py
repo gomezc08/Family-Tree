@@ -55,7 +55,8 @@ INSTALLED_APPS = [
     'common',
     'homescreen',
     'bio',
-    'member_info'
+    'member_info',
+    'login_screen'
 ]
 
 MIDDLEWARE = [
