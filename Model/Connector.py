@@ -26,8 +26,8 @@ class Connector:
         config = {
             "user": "root",
             "password": "!WhitmanMemo08?",
-            "host" : "database-2.cn6a2yksmyq6.us-west-2.rds.amazonaws.com",
-            "port": 3306,
+            "host" : "localhost",
+            "port": 3307,
             "raise_on_warnings": True,
         }
 

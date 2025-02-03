@@ -120,11 +120,11 @@ DATABASES = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'FamLink',
+        'NAME': 'familytree',
         'USER': 'root',
         'PASSWORD': '!WhitmanMemo08?',
-        'HOST': 'database-2.cn6a2yksmyq6.us-west-2.rds.amazonaws.com',  # or the appropriate host
-        'PORT': '3306',
+        'HOST': 'localhost',  # or the appropriate host
+        'PORT': '3307',
     }
 }
 
