@@ -1,50 +1,35 @@
 from django.shortcuts import render, redirect
-from django.core.mail import EmailMessage
-from django.conf import settings
 from .forms import MemberInfoForm
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from email.mime.image import MIMEImage
+from common.models import Person, Interests, Spouse, Household
 
 def member_info_view(request):
     if request.method == 'POST':
         form = MemberInfoForm(request.POST, request.FILES)
         if form.is_valid():
-            # Prepare email content
-            subject = "New Member Info Submitted"
-            message = (
-                f"First Name: {form.cleaned_data['FirstName']}\n"
-                f"Last Name: {form.cleaned_data['LastName']}\n"
-                f"Birthday: {form.cleaned_data['Birthday']}\n"
-                f"Nickname: {form.cleaned_data.get('Nickname')}\n"
-                f"Year Died: {form.cleaned_data.get('YearDied')}\n"
-                f"Gender: {form.cleaned_data.get('Gender')}\n"
-                f"Pronouns: {form.cleaned_data.get('Pronouns')}\n"
-                f"Email: {form.cleaned_data.get('Email')}\n"
-                f"Cell: {form.cleaned_data.get('Cell')}\n"
-                f"City Born: {form.cleaned_data.get('CityBorn')}\n"
-                f"State Born: {form.cleaned_data.get('StateBorn')}\n"
-                f"Country Born: {form.cleaned_data.get('CountryBorn')}\n"
-                f"City Current: {form.cleaned_data.get('CityCurrent')}\n"
-                f"State Current: {form.cleaned_data.get('StateCurrent')}\n"
-                f"Country Current: {form.cleaned_data.get('CountryCurrent')}\n"
-            )
-            from_email = settings.EMAIL_HOST_USER
-            recipient_list = ['avgomez1@msn.com']  # Replace with the recipient's email
+            # Save the form instance to create or update the Person entry
+            new_person = form.save()
 
-            # Create email
-            email = EmailMessage(subject, message, from_email, recipient_list)
-
-            # Attach the photo if provided
-            if 'Photo' in request.FILES:
-                photo = request.FILES['Photo']
-                img = MIMEImage(photo.read())
-                img.add_header('Content-ID', '<photo>')
-                email.attach(img)
-
-            # Send email
-            email.send(fail_silently=False)
-
+            # Optionally handle relationships like children, siblings etc.
+            # Here we assume that form.cleaned_data['Children'] and form.cleaned_data['Siblings']
+            # are populated with the IDs of the children and siblings, respectively
+            if 'Children' in form.cleaned_data and form.cleaned_data['Children']:
+                for child_id in form.cleaned_data['Children']:
+                    # Implement the logic to handle child relationships, depending on your model structure
+                    Household.objects.create(Parent1ID=new_person, ChildID=child_id)
+                    
+            if 'Siblings' in form.cleaned_data and form.cleaned_data['Siblings']:
+                for sibling_id in form.cleaned_data['Siblings']:
+                    # Implement the logic to handle sibling relationships, depending on your model structure
+                    Household.objects.create(Parent1ID=new_person, Parent2ID=sibling_id)
+            
+            if 'Parent' in form.cleaned_data and form.cleaned_data['Parent']:
+                # Assume a model method or similar to create/update a household record
+                Household.objects.create(Parent1ID=form.cleaned_data['Parent'], ChildID=new_person)
+                    
+            # Insert interests if any are provided
+            if 'Interest' in form.cleaned_data and form.cleaned_data['Interest']:
+                Interests.objects.create(PersonID=new_person, Interest=form.cleaned_data['Interest'])
+            
             return redirect('form_success')
     else:
         form = MemberInfoForm()
